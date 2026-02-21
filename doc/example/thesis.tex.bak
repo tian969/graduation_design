@@ -24,7 +24,7 @@
 % biblatex-caspervector 也有一个“ugly”选项，使其更像国标格式；此外也可考虑
 % 改用 style = gb7714-2015 并去掉之后两选项，详见 biblatex-gb7714-2015 的文档。
 \usepackage[backend = biber, style = caspervector, utf8, sorting = ecnyt]{biblatex}
-\usepackage{acronym}
+
 % 对于 linespread 值的计算过程有兴趣的同学可以参考 pkuthss.cls。
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 % 按学校要求设定参考文献列表的段间距。
@@ -33,6 +33,10 @@
 % 如是双盲版论文，将 \blindfalse 改为 \blindtrue。后面可用
 % \ifblind 根据是否双盲来条件地启用代码（参见本文件后面部分）。
 \newif\ifblind\blindfalse
+
+\newcommand{\LLM}{Large Language Model}
+\newcommand{\VLM}{Vision Language Model}
+\newcommand{\vlm}{VLM}
 
 % 设定文档的基本信息。
 \pkuthssinfo{
@@ -61,7 +65,6 @@
 % 普通用户可删除此段，并相应地删除 chap/*.tex 中的
 % “\pkuthssffaq % 中文测试文字。”一行。
 \usepackage{color}
-\usepackage{booktabs}
 \def\pkuthssffaq{%
 	\emph{\textcolor{red}{pkuthss 文档模版最常见问题：}}
 
