@@ -1,0 +1,60 @@
+\begin{figure}[p]
+\centering
+\begin{tikzpicture}[
+  font=\footnotesize,
+  node distance=6mm and 8mm,
+  box/.style={
+    draw,
+    rounded corners,
+    align=center,
+    inner sep=4pt,
+    minimum width=30mm,
+    minimum height=8mm
+  },
+  arr/.style={-Latex, line width=0.6pt}
+]
+
+% ===== 第一行：数据与规则构建 =====
+\node[box] (data)
+{真实多模态样本\\
+文本问题+图像};
+
+\node[box, right=of data] (annot)
+{人工复核与\\
+类别标注};
+
+\node[box, right=of annot] (principle)
+{类别映射为\\
+安全原则};
+
+\node[box, right=of principle] (rule)
+{结合具体问题\\
+生成实例规则};
+
+% ===== 第二行：两阶段合成 =====
+\node[box, below=of principle] (cot)
+{阶段1：生成安全\\
+推理过程};
+
+\node[box, right=of cot] (answer)
+{阶段2：生成\\
+最终回复};
+
+\node[box, below=of answer] (output)
+{结构化训练样本\\
+规则+推理+回复};
+
+% ===== 连接线 =====
+\draw[arr] (data) -- (annot);
+\draw[arr] (annot) -- (principle);
+\draw[arr] (principle) -- (rule);
+
+\draw[arr] (rule) -- (cot);
+\draw[arr] (cot) -- (answer);
+\draw[arr] (answer) -- (output);
+
+\end{tikzpicture}
+\caption{基于规则的两阶段安全数据合成流程。类别首先映射为抽象安全原则，\\
+再结合具体问题生成实例级规则；模型先进行风险分析，再在规则约束下生成最终回复。}
+\label{fig:data_synthesis_flow}
+\end{figure}

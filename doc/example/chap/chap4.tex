@@ -1,74 +1,3 @@
-% \chapter{实验结果与分析}
-
-% \section{实验设置}
-% 使用第3部分构建的Safe-CoT数据集, 与此前的RL数据集, 使用原始的ERNIE-4.5-VL-28B-A3B模型作为baseline, 分别在几个评估集上进行评估:
-% 内部自有安全评估集, 混合开源越狱攻击数据集, 边界通用问题评估集上进行评估, 我们期望伴随训练流程, 模型在提高安全输出能力的同时, 其通用能力能保持在一定水平.
-% 所有评估均在同一解码策略/温度/最大长度下进行, 避免因为解码参数导致的性能差异。
-% 实验分组:
-% 原始模型
-% 蒸馏CoT
-% SafetyCoT
-% SafetyCoT+RLVR
-
-% \section{评估集说明}
-% 安全有用性多模安全评估集: 里面含有一部分安全问题集, 一部分边界有用问题集, 各自计算安全性和有用性分数(如安全性得分为安全占比)
-% 越狱攻击安全评估集: 评估语言模型抵抗越狱攻击的能力, 会有多条嵌入各类模板攻击(如角色扮演, 拒绝抑制等)的有害问题, 评估指标为Attack Success Rate(ASR).
-% 事实可信评估集: 验证经过agentic RL后, 模型是否能正确调用参考搜索工具并返回正确结果.
-% 评估方式说明: 大多数使用LLM-As-A-Judge, 其中事实可信评估集有Ground Truth, 用模型进行比对评估.
-
-
-% \section{实验结果与分析}
-% 引入这部分安全数据, 直接进行有监督微调训练提高了模型的安全输出能力, 但是其中存在的部分拒答样本影响了其能力.
-
-
-% \begin{table*}[t]
-% \centering
-% \caption{多模安全与有用性评估结果。Safety 表示安全占比（越高越好），
-% Help 表示有用性得分（越高越好），Safe\text{\&}Helpful 表示同时满足安全与有用性的比例。}
-% \label{tab:main_results}
-% \begin{tabular}{lccc}
-% \toprule
-% Model & Safety $\uparrow$ & Helpfulness $\uparrow$ & Safe\text{\&}Helpful $\uparrow$ \\
-% \midrule
-% Base Model &  &  &  \\
-% Distilled CoT &  &  &  \\
-% SafetyCoT &  &  &  \\
-% SafetyCoT + RLVR &  &  &  \\
-% \bottomrule
-% \end{tabular}
-% \end{table*}
-
-% \begin{table}[t]
-% \centering
-% \caption{越狱攻击安全评估结果。ASR 表示 Attack Success Rate（越低越好）。}
-% \label{tab:jailbreak}
-% \begin{tabular}{lc}
-% \toprule
-% Model & ASR $\downarrow$ \\
-% \midrule
-% Base Model &  \\
-% Distilled CoT &  \\
-% SafetyCoT &  \\
-% SafetyCoT + RLVR &  \\
-% \bottomrule
-% \end{tabular}
-% \end{table}
-
-% \begin{table*}[t]
-% \centering
-% \caption{Agentic RAG 事实可信评估结果。Fact Acc 表示与 Ground Truth 一致率，
-% Safety 表示风险响应合规率，Latency 为平均响应时延。}
-% \label{tab:rag_results}
-% \begin{tabular}{lcccc}
-% \toprule
-% Model & Tool Trigger Acc $\uparrow$ & Fact Acc $\uparrow$ & Safety $\uparrow$ & Latency (ms) \\
-% \midrule
-% Vanilla RAG &  &  &  &  \\
-% Agentic RAG &  &  &  &  \\
-% \bottomrule
-% \end{tabular}
-% \end{table*}
-
 \chapter{实验结果与分析}
 
 \section{实验设置}
@@ -80,52 +9,134 @@
 
 \begin{itemize}
     \item \textbf{Base Model：} 原始 ERNIE-4.5-VL-28B-A3B；
-    \item \textbf{Distilled CoT：} 使用普通蒸馏 CoT 数据进行监督微调；
+    \item \textbf{Distilled CoT：} 基于DeepSeek-R1-0528版本教师模型蒸馏得到的 CoT 数据进行监督微调；
     \item \textbf{SafetyCoT：} 使用基于规则的安全反思 CoT 数据进行监督微调；
     \item \textbf{SafetyCoT + RLVR：} 在 SafetyCoT 基础上进一步进行规则验证驱动的在线强化学习。
 \end{itemize}
 
 \paragraph{统一推理设置}
-为保证评估公平性，所有模型在推理时采用相同的解码策略、温度参数与最大生成长度，避免由于解码参数差异引入性能偏移。我们的目标是验证：随着训练流程推进，模型在提升安全输出能力的同时，其通用能力能够保持在合理水平，并进一步分析 RLVR 对越狱鲁棒性与边界场景稳定性的影响。
+为保证评估公平性，所有模型在推理时采用相同的解码策略、温度参数与最大生成长度，避免由于解码参数差异引入性能偏移。我们的目标是验证：
+随着训练流程推进，模型在提升安全输出能力的同时，其通用能力能够保持在合理水平，并进一步分析 RLVR 对越狱鲁棒性与边界场景稳定性的影响。
 
 \section{评估集说明}
 
-\subsection{安全有用性多模安全评估集}
+% \subsection{多模安全评估集}
+% \subsubsection{数据集说明}
+% % 需要数据集来源说明一下 以及各分类定义 凑字数
+% 该评估集由两类数据构成：
+% 安全问题集与有用问题集。
+% 前者用于评估模型在明确或潜在违规场景下的合规性；数据来源为线上流量日志中被人工审核为对应违规的问题集;
+% 后者用于评估模型在非违规但接近风险边界的输入上是否仍能保持正常应答能力，从而衡量过度拒答现象。
 
-该评估集由两部分构成：安全风险问题集与边界有用问题集。前者用于评估模型在明确或潜在违规场景下的合规性；后者用于评估模型在非违规但接近风险边界的输入上是否仍能保持正常应答能力，从而衡量过度拒答现象。
 
-在该评估集上，我们分别计算安全性与有用性指标：安全性得分定义为安全占比（即模型未产生违规输出的比例）；有用性得分定义为在边界有用问题上满足指令要求、给出有效回答的比例。除此之外，我们额外报告 Safe\&Helpful 指标，用于刻画模型同时满足安全与有用性的整体能力平衡。
+% 在该评估集上，我们分别计算安全性与有用性指标：
+% 安全性得分定义为安全占比（即模型未产生违规输出的比例）；
+% 有用性得分定义为在边界有用问题上满足指令要求、给出有效回答的比例。
+% 除此之外，我们额外报告 Safe\&Helpful 指标，用于刻画模型同时满足安全与有用性的整体能力平衡。
 
-\subsection{越狱攻击安全评估集}
+% \subsubsection{数据集分布}
+% 我们按照审核违规类别将数据分为8类, 评估集具体分布如下所示
 
-该评估集用于评估模型抵抗越狱攻击的能力，包含多种模板化攻击方式（例如角色扮演、拒绝抑制、语义改写等）所包装的有害问题。评价指标为 Attack Success Rate（ASR），即攻击成功诱导模型生成违规内容的比例，数值越低代表模型越鲁棒。
+\subsection{多模安全评估集}
 
-\subsection{事实可信评估集（Agentic RAG）}
+\subsubsection{数据集说明}
 
+为系统评估模型在真实部署场景下的安全表现与能力平衡情况，本文构建了一个多模态安全评估集。该评估集由两类数据构成：\textbf{安全问题集}与\textbf{有用问题集}。
+
+\textbf{安全问题集}用于评估模型在明确或潜在违规场景下的合规性。数据来源于线上流量日志中经人工审核确认为违规类别的问题样本。此类样本覆盖多种高风险语境，能够反映模型在开放环境中可能遭遇的真实攻击与敏感问题形式。
+
+\textbf{有用问题集}用于评估模型在非违规但接近风险边界输入下的正常应答能力。该部分样本语义上可能涉及敏感领域或灰度表达，但本身不构成违规内容。该数据用于衡量模型在强化安全能力后是否出现过度拒答（Over-refusal）现象，从而评估模型在安全与有用性之间的平衡能力。
+
+在该评估集上，我们分别计算安全性与有用性指标：
+
+\begin{itemize}
+    \item \textbf{安全性得分（Safety Score）：} 定义为模型在安全问题集上未产生违规输出的比例；
+    \item \textbf{有用性得分（Helpfulness Score）：} 定义为模型在边界有用问题上满足指令要求并给出有效回答的比例；
+\end{itemize}
+
+\subsubsection{数据集分布}
+评估集按照审核违规类别进行细分，共覆盖以下十二类风险类型：
+暴力、血腥、犯罪、仇恨、儿童保护、成人内容与敏感主题、
+性感低俗、心理与行为健康、欺凌与骚扰、管制商品及服务、
+隐私以及涉政涉习。
+每个违规类别包含 $30$ 条评估样本，共计：
+\begin{equation}
+N_{\text{unsafe}} = 12 \times 30 = 360
+\end{equation}
+
+在此基础上，为评估过度拒答现象，构建正常边界问题样本，其数量与安全问题保持 $1:2$ 的比例，即：
+
+\begin{equation}
+N_{\text{normal}} = 1 / 2 \times N_{\text{unsafe}} = 180
+\end{equation}
+
+因此，整个评估集规模为：
+
+\begin{equation}
+N_{\text{total}} = N_{\text{unsafe}} + N_{\text{normal}} = 540
+\end{equation}
+
+该分布设计具有如下特点：
+
+\begin{itemize}
+    \item 多类别均衡采样，避免单一风险类型主导整体结果；
+    \item 较高比例的正常样本用于充分检测模型是否因安全强化而牺牲有用性；
+    \item 类别覆盖广泛，能够反映开放环境下不同类型风险表达形式。
+\end{itemize}
+
+通过上述设计，该评估集能够较为全面地衡量模型在真实部署环境中面对复杂语境时的安全稳健性与服务能力平衡情况。
+
+\subsubsection{评估方式说明}
+采用LLM-AS-A-JUDGE的方式, 基于此前生产的实例级别的rule, 依据输出是否合规来判断是否符合安全标准要求,
+针对有用性问题考察也基于同样的方式.
+
+
+\subsection{越狱攻击评估集}
+
+\subsubsection{越狱攻击评估集说明}
+% 越狱攻击数据集来源, 以及各种攻击类型, 现有大模型对于各种攻击类型的容忍程度
+% jailbreakbench LLM-PBE MM-SafetyBench
+% 可以给一个示例?
+该评估集为纯文本评估集 用于评估模型抵抗越狱攻击的能力，包含多种模板化攻击方式
+（例如角色扮演、拒绝抑制、语义改写等）所包装的有害问题。
+评价指标为 Attack Success Rate（ASR），即攻击成功诱导模型生成违规内容的比例，数值越低代表模型越健壮。
+
+\subsubsection{越狱攻击评估集数据分布}
+该评估集参考了主流开源文本越狱攻击方式, 在原始ERNIE-4.5-VL-28B-A3B模型上进行推理, 主要选择基于模版的攻击方式, 选取表现较差的前10\%的
+攻击方式作为评估集模版, 如下所示:
+
+
+\subsubsection{评估方式说明}
+基于LLM-AS-A-JUDGE的方式, 使用固定的请求模版, 做一个是否存在有害输出的二分类任务. 使用ERNIE-4.5-300B-A47B作为评估模型, 不使用主流开源商用模型的
+原因是 安全问题和输出存在敏感内容, 存在被拦截导致评估结果部分缺失的情况, 因此需要自己部署开源模型评估
+
+
+\subsection{事实可信评估集}
+\subsubsection{事实可信评估集说明}
+% 数据是怎么构建的 说具体点 可以给一个示例
 该评估集用于验证在引入 Agentic RL（结合检索工具调用）后，模型是否能够正确触发外部搜索工具、利用检索证据进行回答，并保持事实一致性。与前两类主要关注安全风险不同，该评估集重点衡量模型在外部信息依赖条件下的事实可信与工具使用行为是否稳定。
 
-\subsection{评估方式说明}
-
-多数评估指标采用 LLM-As-A-Judge 方式进行自动判定，以提升评测效率与一致性。对于事实可信评估集，由于提供 Ground Truth，我们基于模型输出与 Ground Truth 的一致性进行比对评估，以获得更客观的事实正确性度量。
+\subsubsection{评估方式说明}
+参考3.2中的数据集构建方式, 在构建问题的同时获得了对应的基准事实(Ground Truth), 多数评估指标采用 LLM-As-A-Judge 方式进行自动判定，以提升评测效率与一致性。对于事实可信评估集，由于提供 Ground Truth，我们基于模型输出与 Ground Truth 的一致性进行比对评估，以获得更客观的事实正确性度量。
 
 \section{实验结果与分析}
 
-本节给出不同训练策略在各评估集上的结果，并结合实验现象分析各组件的增益来源。总体而言，引入安全反思监督训练（SafetyCoT）能够显著提升模型在安全风险场景下的合规性，同时较好保持边界与通用场景下的回答能力；进一步引入 RLVR 后，模型在越狱攻击与拒绝不足等方面获得额外收益。
+本节给出不同训练策略在各评估集上的结果，并结合实验现象分析各组件的增益来源。总体而言，引入安全反思监督训练（SafetyCoT）能够显著提升模型在安全风险场景下的合规性，对于越狱攻击的抵御也能起到很好的提升, 同时较好保持边界与通用场景下的回答能力；进一步引入 RLVR 后，模型的安全能力获得了进一步提高。
 
 \subsection{多模安全与有用性主结果}
 
 \begin{table*}[t]
 \centering
-\caption{多模安全与有用性评估结果。Safety 表示安全占比（越高越好），Help 表示有用性得分（越高越好），Safe\text{\&}Helpful 表示同时满足安全与有用性的比例。}
+\caption{多模安全与有用性评估结果。Safety 表示安全占比（越高越好），Helpfulness 表示有用性得分（越高越好）。}
 \label{tab:main_results}
-\begin{tabular}{lccc}
+\begin{tabular}{lcc}
 \toprule
-Model & Safety $\uparrow$ & Helpfulness $\uparrow$ & Safe\text{\&}Helpful $\uparrow$ \\
+Model & Safety $\uparrow$ & Helpfulness $\uparrow$ \\
 \midrule
-Base Model &  &  &  \\
-Distilled CoT &  &  &  \\
-SafetyCoT &  &  &  \\
-SafetyCoT + RLVR &  &  &  \\
+Base Model  & 0.56  & 1.00 \\
+Distilled CoT & 0.73 & 0.81 \\
+SafetyCoT & 0.88 & 0.91 \\
+SafetyCoT + RLVR & 0.92 & 0.89 \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -144,10 +155,10 @@ SafetyCoT + RLVR &  &  &  \\
 \toprule
 Model & ASR $\downarrow$ \\
 \midrule
-Base Model &  \\
-Distilled CoT &  \\
-SafetyCoT &  \\
-SafetyCoT + RLVR &  \\
+Base Model & 0.72 \\
+Distilled CoT & 0.31 \\
+SafetyCoT & 0.28 \\
+SafetyCoT + RLVR & 0.12 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -164,8 +175,8 @@ SafetyCoT + RLVR &  \\
 \toprule
 Model & Tool Trigger Acc $\uparrow$ & Fact Acc $\uparrow$ & Safety $\uparrow$ & Latency (ms) \\
 \midrule
-Vanilla RAG &  &  &  &  \\
-Agentic RAG &  &  &  &  \\
+Vanilla RAG &  & 80.3  &  & 120 \\
+Agentic RAG &  & 86.7 &  & 400 \\
 \bottomrule
 \end{tabular}
 \end{table*}
