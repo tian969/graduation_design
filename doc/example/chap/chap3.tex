@@ -1,7 +1,7 @@
 % Copyright (c) 2014,2016,2018 Casper Ti. Vector
 % Public domain.
 
-\chapter{方法}
+\chapter{论文方法}
 \input{chap/data_construction_flow.tex}
 
 \section{问题定义与总体训练范式}
@@ -140,11 +140,13 @@ r_{\text{safe}}(x,y)
 J(\theta)
 \end{equation}
 
+\input{chap/training_flow.tex}
+
 其中 $\theta_1$ 为安全反思监督微调后的模型参数，$\theta^*$ 为经过规则验证强化学习优化后的最终模型。
 
 该分阶段范式实现了安全能力从“规则理解”到“行为层面内化”的逐步过渡，在保证模型有用性的同时提升安全稳健性。
 
-\section{数据来源与预处理}
+\section{安全数据来源与预处理}
 
 \subsection{数据来源与样本构成}
 
