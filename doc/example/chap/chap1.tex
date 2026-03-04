@@ -6,7 +6,7 @@
 \section{研究背景及意义}
 % Qwen系列, Llama系列开源模型技术报告
 % Qwen-VL系列, Intern-VL系列模型开源技术报告
-近年来，\ac{LLM} 与 \ac{VLM}在模型规模、数据规模与训练范式持续演进的推动下，在自然语言理解、多模态语义对齐、跨模态推理与生成能力方面取得了显著突破\supercite{DBLP:journals/corr/abs-2001-08361, wei2022emergentabilitieslargelanguage}。
+近年来，大语言模型(Large Language Model，LLM) 与 视觉语言模型(Vision-Language Model，VLM)在模型规模、数据规模与训练范式持续演进的推动下，在自然语言理解、多模态语义对齐、跨模态推理与生成能力方面取得了显著突破\supercite{DBLP:journals/corr/abs-2001-08361, wei2022emergentabilitieslargelanguage}。
 从早期的单模态表示学习到当前具备复杂指令跟随能力的通用大模型，模型逐步展现出接近甚至超越人类平均水平的语言组织与知识表达能力\supercite{DBLP:conf/nips/BrownMRSKDNSSAA20}。
 以 Qwen 系列、Llama 系列为代表的开源大语言模型\supercite{Qwen3-Technical-Report, yang2025qwen3, kassianik2025llama}，
 以及 Qwen-VL、Intern-VL 等多模态模型的技术报告表明\supercite{DBLP:journals/corr/abs-2312-14238, DBLP:journals/corr/abs-2508-18265, DBLP:journals/corr/abs-2504-10479}，
@@ -25,7 +25,6 @@
 例如，用户上传设备损坏图片并询问处理方式，或提交商品图片咨询退换货规则。在此类知识密集型场景中，模型需要同时完成视觉理解、知识检索与文本生成任务。
 若模型基于错误的视觉理解生成不准确建议，或在缺乏可靠依据时产生事实性幻觉，可能导致误导性答复，增加人工复核成本，甚至引发潜在安全隐患。由于客服系统通常与内部知识库、工单系统及业务流程自动化模块联动，模型输出一旦被系统自动采纳，其偏差可能在流程中级联传播，形成放大效应。
 
-% 这里找一个多模安全评估集的图片举例
 此外，在开放式对话场景中，多模态模型作为通用聊天机器人，需要面对来源复杂、意图多样的用户输入。
 其中部分问题可能具有潜在恶意或现实危害性，例如询问有毒化学品的制备方法、危险装置的构造方式、规避监管的具体操作步骤，或围绕极端组织、邪教团体及涉政敏感人物进行引导性提问。
 在此类场景中，模型若直接给出具备可操作性的具体方案，可能带来现实世界安全风险与合规风险\supercite{wang-adashield-eccv-2024, DBLP:journals/corr/abs-2505-24208}。
