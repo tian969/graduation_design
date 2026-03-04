@@ -5,7 +5,7 @@
 \section{大模型微调}
 \subsection{预训练范式与能力形成}
 
-大语言模型的成功建立在大规模预训练范式基础之上。通过在海量文本语料上进行自监督学习，模型能够习得语言的结构、语义和世界知识。缩放定律揭示了模型性能与计算量、参数规模和数据量之间的幂律关系，为模型设计提供了理论指导。缩放定律可以表示为：
+大语言模型的成功建立在大规模预训练范式基础之上。通过在海量文本语料上进行自监督学习，模型能够习得语言的结构、语义和世界知识。缩放定律揭示了模型性能与计算量、参数规模和数据量之间的幂律关系，为模型设计提供了理论指导\supercite{DBLP:journals/corr/abs-2001-08361}。缩放定律可以表示为：
 \begin{equation}
 L(C, D, N) = \left(\frac{N_c}{N}\right)^\alpha + \left(\frac{D_c}{D}\right)^\beta
 \end{equation}
@@ -29,7 +29,7 @@ L(C, D, N) = \left(\frac{N_c}{N}\right)^\alpha + \left(\frac{D_c}{D}\right)^\bet
 
 \subsection{指令微调}
 
-指令微调是指在预训练基础上，通过监督学习训练模型遵循自然语言指令完成特定任务的方法。相关研究首次系统性地研究了指令微调的效果，证明了通过多任务指令微调可以显著提升模型的零样本和少样本性能\supercite{DBLP:conf/iclr/WeiBZGYLDDL22}。
+指令微调是指在预训练基础上，通过监督学习训练模型遵循自然语言指令完成特定任务的方法\supercite{DBLP:conf/iclr/WeiBZGYLDDL22}。相关研究首次系统性地研究了指令微调的效果，证明了通过多任务指令微调可以显著提升模型的零样本和少样本性能。
 
 指令微调的核心思想是将各种NLP任务统一为指令-响应格式，使模型学习到通用的指令遵循能力。相关研究进一步研究了指令微调的缩放行为，发现随着模型规模和指令数据量的增加，模型的指令遵循能力持续提升\supercite{DBLP:journals/corr/abs-2210-11416}。
 
@@ -37,9 +37,9 @@ L(C, D, N) = \left(\frac{N_c}{N}\right)^\alpha + \left(\frac{D_c}{D}\right)^\bet
 
 \subsection{人类反馈强化学习}
 
-尽管指令微调提升了模型遵循指令的能力，但模型的输出仍可能与人类价值观和期望存在偏差。人类反馈强化学习（Reinforcement Learning from Human Feedback, RLHF）通过引入人类偏好信号，使模型输出与人类价值观对齐\supercite{DBLP:conf/nips/Ouyang0JAWMZASR22}。
+尽管指令微调提升了模型遵循指令的能力，但模型的输出仍可能与人类价值观和期望存在偏差。人类反馈强化学习（Reinforcement Learning from Human Feedback, RLHF）通过引入人类偏好信号，使模型输出与人类价值观对齐。
 
-RLHF通常包含三个阶段：首先使用人类标注的偏好数据训练奖励模型（Reward Model），然后使用强化学习算法（如PPO）优化策略模型，使生成的输出获得更高的奖励。相关研究进一步将RLHF扩展到有害性（Harmlessness）对齐，训练出既有帮助性又无害的助手\supercite{DBLP:journals/corr/abs-2204-05862}。
+RLHF通常包含三个阶段：首先使用人类标注的偏好数据训练奖励模型（Reward Model），然后使用强化学习算法（如PPO）优化策略模型，使生成的输出获得更高的奖励\supercite{DBLP:conf/nips/Ouyang0JAWMZASR22}。相关研究进一步将RLHF扩展到有害性（Harmlessness）对齐，训练出既有帮助性又无害的助手\supercite{DBLP:journals/corr/abs-2204-05862}。
 
 Anthropic团队提出的宪法人工智能（Constitutional AI, CAI）方法探索了利用AI反馈替代部分人类反馈的可能性，通过预定义的宪法原则指导模型自我批评和修正，降低了RLHF对大规模人类标注的依赖\supercite{DBLP:journals/corr/abs-2212-08073}。
 
@@ -67,13 +67,13 @@ DPO的核心思想是直接在策略空间优化偏好数据，通过分析偏�
 
 \subsection{安全对齐的特殊性与对齐税问题}
 
-安全对齐是大模型对齐的特殊且重要方面。与有用性对齐不同，安全对齐的目标是阻止模型生成有害内容，这与模型内生的指令遵循能力存在本质冲突。这种冲突导致安全对齐面临"过度拒绝"（Overrefusal）问题，即模型拒绝回答合法的良性请求。
+安全对齐是大模型对齐的特殊且重要方面。与有用性对齐不同，安全对齐的目标是阻止模型生成有害内容，这与模型内生的指令遵循能力存在本质冲突\supercite{zeng2025glm}。这种冲突导致安全对齐面临"过度拒绝"（Overrefusal）问题，即模型拒绝回答合法的良性请求。
 
-相关研究表明，在几乎不增加成本的情况下进行安全微调可以显著提升模型的安全性，但同时也可能导致模型有用性的下降，即所谓的"对齐税"\supercite{DBLP:conf/icml/ZongBYYH24}。机制性研究发现，安全微调的机制和效果与数据质量、模型架构等因素密切相关\supercite{DBLP:conf/nips/JainLOJ0SD24}。
+相关研究表明，在几乎不增加成本的情况下进行安全微调可以显著提升模型的安全性，但同时也可能导致模型有用性的下降，即所谓的"对齐税"\supercite{DBLP:conf/icml/ZongBYYH24}。机制性研究发现，安全微调的机制和效果与数据质量、模型架构等因素密切相关\supercite{Jain2024WhatMA, DBLP:conf/nips/JainLOJ0SD24}。
 
-多模态模型的安全对齐更为复杂。相关研究证明了即使是经过安全对齐的领先大语言模型，也可能通过简单的自适应攻击被越狱\supercite{DBLP:conf/iclr/AndriushchenkoC25}。在多模态场景下，攻击者可以利用图像等视觉模态绕过文本层面的安全防护\supercite{wang-adashield-eccv-2024}。
+多模态模型的安全对齐更为复杂。相关研究证明了即使是经过安全对齐的领先大语言模型，也可能通过简单的自适应攻击被越狱\supercite{DBLP:conf/iclr/AndriushchenkoC25}。在多模态场景下，攻击者可以利用图像等视觉模态绕过文本层面的安全防护。
 
-为了应对这些挑战，研究者提出了多种方法，包括推理时安全控制、安全模块化训练、安全推理链等。这些方法各有侧重，旨在在保持模型有用性的同时提升安全性\supercite{DBLP:conf/nips/ZouPWDLAKFH24}。
+为了应对这些挑战，研究者提出了多种方法，包括推理时安全控制、安全模块化训练、安全推理链等\supercite{DBLP:journals/corr/abs-2405-16833}。这些方法各有侧重，旨在在保持模型有用性的同时提升安全性。
 
 \subsection{本节小结}
 
@@ -114,15 +114,15 @@ ReAct框架在问答、知识检索、多步骤推理等任务上表现出色，
 
 随着多模态大模型的发展，思维链推理被扩展到视觉-语言场景。多模态思维链（Visual Chain-of-Thought, VCoT）方法旨在通过在视觉理解和文本生成之间建立推理链，提升模型在多模态推理任务上的性能。
 
-VCoT方法的核心思想是在回答视觉问题时，先生成对图像内容的逐步分析和推理，然后基于这些中间步骤生成最终答案。这种分层推理方式使模型能够更好地理解复杂的视觉场景，处理需要多步推理的视觉问答任务\supercite{DBLP:conf/aaai/ChenZSHSGG24}。
+VCoT方法的核心思想是在回答视觉问题时，先生成对图像内容的逐步分析和推理，然后基于这些中间步骤生成最终答案。这种分层推理方式使模型能够更好地理解复杂的视觉场景，处理需要多步推理的视觉问答任务。
 
-多模态CoT面临的独特挑战包括：如何设计有效的视觉推理步骤、如何在视觉特征和文本推理之间建立关联、如何处理图像中的模糊性和歧义等。研究表明，精心设计的多模态CoT方法能够显著提升模型在视觉推理、图像描述、场景理解等任务上的性能。
+多模态CoT面临的独特挑战包括：如何设计有效的视觉推理步骤、如何在视觉特征和文本推理之间建立关联、如何处理图像中的模糊性和歧义等。研究表明，精心设计的多模态CoT方法能够显著提升模型在视觉推理、图像描述、场景理解等任务上的性能\supercite{DBLP:conf/aaai/ChenZSHSGG24}。
 
 \subsection{安全思维链的演进}
 
 安全思维链（Safety Chain-of-Thought, Safety CoT）是CoT推理在安全领域的应用，旨在通过显式的安全推理过程提升模型的安全识别和防御能力。早期的安全方法主要依赖于简单的分类模型，而Safety CoT引入了推理层，使模型能够分析问题的安全性质和潜在风险。
 
-GuardReasoner-VL等人提出的安全推理机制训练模型在输出安全判断前先生成详细的安全推理过程，包括识别潜在风险、分析攻击意图、评估危害程度等\supercite{DBLP:journals/corr/abs-2508-18649}。这种推理增强的方法显著提升了模型对复杂攻击的识别能力。
+GuardReasoner-VL等人提出的安全推理机制训练模型在输出安全判断前先生成详细的安全推理过程，包括识别潜在风险、分析攻击意图、评估危害程度等。这种推理增强的方法显著提升了模型对复杂攻击的识别能力\supercite{DBLP:journals/corr/abs-2505-18531}。
 
 Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早期方法主要基于"问题-拒答"对进行训练，导致模型缺乏对安全本质的理解。现代Safety CoT方法通过引入安全推理链，使模型能够解释为何某个请求是不安全的，从而提升安全判断的准确性和可解释性。
 
@@ -135,7 +135,7 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 
 \section{通用大模型面临的核心风险}
 
-近年来，\ac{LLM}的飞速发展显著提升了自然语言处理的基准，并进一步催生了视觉语言模型\ac{VLM}的多模态理解能力\supercite{yang2025qwen3,kassianik2025llama,zeng2025glm}。然而，随着模型参数量和应用场景的扩张，其潜藏的安全风险也愈发凸显。
+近年来，\ac{LLM}的飞速发展显著提升了自然语言处理的基准，并进一步催生了视觉语言模型\ac{VLM}的多模态理解能力\supercite{wang-adashield-eccv-2024, DBLP:journals/corr/abs-2505-24208}。然而，随着模型参数量和应用场景的扩张，其潜藏的安全风险也愈发凸显\supercite{DBLP:conf/cvpr/WangGL025}。
 
 正常场景中，面临的多模态安全风险主要可以分为以下几类：文本风险、图片风险、图文联合风险。
 
@@ -147,11 +147,11 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 \begin{itemize}
     \item \textbf{过度拒绝与拒绝不足：} 模型在安全性和有用性之间存在帕累托前沿（Pareto frontier）的博弈。这导致模型要么容易被欺骗输出有害内容，要么过度保守，拒绝回答合法的良性请求（Overrefusal）。
     
-    \item \textbf{越狱攻击：} 恶意用户可以通过精心设计的提示词（Adversarial Prompts）诱导模型绕过内部安全准则，生成不当或有害内容，如非法行为指令、自残建议等\supercite{Robey2023SmoothLLMDL}。
+    \item \textbf{越狱攻击：} 恶意用户可以通过精心设计的提示词（Adversarial Prompts）诱导模型绕过内部安全准则，生成不当或有害内容，如非法行为指令、自残建议等\supercite{DBLP:conf/iclr/AndriushchenkoC25, Robey2023SmoothLLMDL}。
     
-    \item \textbf{幻觉问题：} 模型生成事实性错误或逻辑不连贯内容的现象，在视觉语言模型中尤为严重。
+    \item \textbf{幻觉问题：} 模型生成事实性错误或逻辑不连贯内容的现象\supercite{DBLP:journals/csur/JiLFYSXIBMF23,DBLP:conf/emnlp/LiCZNW23}，在视觉语言模型中尤为严重。
     
-    \item \textbf{种族歧视与偏见：} 模型在海量互联网数据预训练过程中，不可避免地吸收了人类社会存在的社会偏见。这种偏见不仅体现在文本回复中，更在图像识别与关联中被放大。例如，模型可能在视觉识别中对特定族裔产生刻板印象，或在招聘、风险评估等下游任务中表现出系统性的种族或性别歧视。这不仅是技术挑战，更是违反 AI 伦理准则的核心问题，直接影响了模型的大规模部署与社会合规性。
+    \item \textbf{种族歧视与偏见：} 模型在海量互联网数据预训练过程中，不可避免地吸收了人类社会存在的社会偏见\supercite{DBLP:conf/acl/ParrishCNPPTHB22,DBLP:conf/acl/BlodgettBDW20}。这种偏见不仅体现在文本回复中，更在图像识别与关联中被放大。例如，模型可能在视觉识别中对特定族裔产生刻板印象\supercite{DBLP:conf/fat/BenderGMS21}，或在招聘、风险评估等下游任务中表现出系统性的种族或性别歧视。这不仅是技术挑战，更是违反 AI 伦理准则的核心问题，直接影响了模型的大规模部署与社会合规性。
 \end{itemize}
 
 我们的研究主要聚焦于提高输出安全，应对拒绝不足和越狱攻击，以及通过更合理地利用外挂知识库，解决可能出现的幻觉问题。
@@ -166,9 +166,9 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 
 通过构建完整的安全审查链路以阻断不良信息的正常流转，是当前输入输出安全防护领域的主流思路，也是工业界应用最为广泛的技术方案之一。其核心设计理念在于引入一个参数量更小的轻量模型，专门负责对输入内容与输出结果进行安全校验。
 
-该校验过程可灵活作用于两个环节：既可以对用户发起的查询请求进行前置筛查，也可在主模型完成推理生成后，对输出内容进行后置校验。典型代表模型包括 Llama-Guard\supercite{Inan2023LlamaGL}、Llava-Guard\supercite{Helff2024LLavaGuardVS}、Shield-Gemma、Qwen3-Guard\supercite{zhao2025qwen3guard}、WildGuard 等。
+该校验过程可灵活作用于两个环节：既可以对用户发起的查询请求进行前置筛查，也可在主模型完成推理生成后，对输出内容进行后置校验。典型代表模型包括 Llama-Guard\supercite{Inan2023LlamaGL,Helff2024LLavaGuardVS,DBLP:journals/corr/abs-2407-21772,DBLP:journals/corr/abs-2510-14276,DBLP:conf/nips/HanREJL00D24}等。
 
-具体而言，在主模型完成推理任务后，由该轻量化校验模型评判输出结果是否违反预设安全准则，若检测到违规内容，则触发对应的后处理流程。相关后处理方案可参考 VLMGuard-R1\supercite{DBLP:journals/corr/abs-2505-24208}、MLLM-Protector 等研究。
+具体而言，在主模型完成推理任务后，由该轻量化校验模型评判输出结果是否违反预设安全准则，若检测到违规内容，则触发对应的后处理流程。相关后处理方案可参考 VLMGuard-R1、MLLM-Protector 等研究\supercite{Wang2024MLLMasaJudgeFI, DBLP:journals/corr/abs-2504-10081}。
 
 此类方法实现逻辑简洁，与主模型训练及推理流程完全解耦，具备较强工程实用性。但其局限性在于：安全能力依赖完整审查链路部署，若直接调用开源模型，仍可能生成违规内容。此外，前置分类模型泛化能力有限，当安全规则频繁调整时，需反复训练，维护成本较高。
 
@@ -196,21 +196,21 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 
 该类方法在冻结主干参数的前提下，通过参数高效微调（PEFT）注入安全知识，降低训练成本并减少灾难性遗忘。
 
-例如 Safety Fine-Tuning at (Almost) No Cost 使用 LoRA 技术进行安全微调\supercite{DBLP:conf/icml/ZongBYYH24}。但后续研究指出，仅文本层面微调难以抵御视觉越狱攻击\supercite{Jain2024WhatMA}。
+例如 Safety Fine-Tuning at (Almost) No Cost 使用 LoRA 技术进行安全微调\supercite{DBLP:conf/icml/ZongBYYH24}。但后续研究指出，仅文本层面微调难以抵御视觉越狱攻击。
 
-因此，研究开始聚焦视觉-语言对齐层。例如 SafeVLM 在视觉编码器后引入“安全投影仪（Safety Projector）”和安全 Token，用于拦截视觉风险特征。VLMGuard-R1 提出多模态提示重写器，通过后视分析与多模态因果分析将潜在风险查询转化为安全指令\supercite{DBLP:journals/corr/abs-2505-24208}。
+因此，研究开始聚焦视觉-语言对齐层。例如 SafeVLM 在视觉编码器后引入“安全投影仪（Safety Projector）”和安全 Token，用于拦截视觉风险特征。VLMGuard-R1 提出多模态提示重写器，通过后视分析与多模态因果分析将潜在风险查询转化为安全指令\supercite{DBLP:conf/cvpr/ZhangCZGZFYJQ0Z25, DBLP:journals/corr/abs-2508-18649}。
 
-此类方法具备模块化灵活性，但在极隐晦跨模态攻击下仍受限于轻量模块表征能力\supercite{DBLP:conf/cvpr/ZhangCZGZFYJQ0Z25}。
+此类方法具备模块化灵活性，但在极隐晦跨模态攻击下仍受限于轻量模块表征能力\supercite{yang2025qwen3, kassianik2025llama}。
 
 \subsection{融入推理过程的安全有监督微调（Reasoning-Aware SFT）}
 
 传统 SFT 依赖“问题-拒答”对进行训练，导致模型缺乏对“不安全原因”的深层理解，即“安全推理鸿沟（Safety Reasoning Gap）”。
 
-为此，引入安全思维链（Safety CoT）。例如 GuardReasoner-VL 训练模型在输出最终标签前先生成安全推理过程，从而提升复杂攻击识别率。MIRage 数据集通过多图输入与安全 CoT 标签训练模型进行风险推理\supercite{Wang2024MLLMasaJudgeFI}。
+为此，引入安全思维链（Safety CoT）。例如 GuardReasoner-VL 训练模型在输出最终标签前先生成安全推理过程，从而提升复杂攻击识别率。MIRage 数据集通过多图输入与安全 CoT 标签训练模型进行风险推理\supercite{DBLP:journals/corr/abs-2505-18531}。 deliberative alignment 方法进一步证明了推理能力在安全对齐中的重要作用\supercite{guan-deliberative-alignment-2024}。
 
-实验表明，该方法不仅降低攻击成功率，在部分通用任务上还提升性能\supercite{DBLP:journals/corr/abs-2405-16833}。
+实验表明，该方法不仅降低攻击成功率，在部分通用任务上还提升性能。
 
-此外，仅利用包含拒绝回复的良性指令数据进行微调，也可有效纠正模型的过度顺从偏差（Compliance Bias）\supercite{DBLP:journals/corr/abs-2504-10081}。
+此外，仅利用包含拒绝回复的良性指令数据进行微调，也可有效纠正模型的过度顺从偏差（Compliance Bias）。
 
 \subsection{基于反馈的偏好对齐优化}
 
@@ -218,7 +218,7 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 
 传统 RLHF 面临“对齐税（Alignment Tax）”问题。Safe RLHF-V 提出多模态反馈强化学习框架，通过构建包含有用性与安全性双重偏好的数据集（BeaverTails-V），并建模为受约束优化问题，在最大化有用性的同时确保安全性阈值\supercite{DBLP:journals/corr/abs-2505-18531}。
 
-此外，PRISM 方法捕捉视觉与文本模态间细粒度交互进行偏好建模\supercite{DBLP:journals/corr/abs-2508-18649}。GuardReasoner-VL 在 RL 阶段引入针对推理过程的奖励信号，确保安全判断基于逻辑推导。
+此外，PRISM 方法捕捉视觉与文本模态间细粒度交互进行偏好建模\supercite{DBLP:journals/corr/abs-2508-18649}。GuardReasoner-VL 在 RL 阶段引入针对推理过程的奖励信号，确保安全判断基于逻辑推导\supercite{DBLP:conf/nips/ZouPWDLAKFH24}。
 
 未来安全训练将不再局限于简单拒答，而是向更具解释性、兼顾通用能力的精细化方向发展。
 
@@ -281,9 +281,9 @@ BM25是一种经典的信息检索算法，其相关性评分函数定义为：
 
 \subsection{多模态检索增强生成}
 
-随着多模态大模型的发展，检索增强生成也被扩展到多模态领域。多模态RAG（Multimodal RAG）能够处理文本、图像、音频等多种模态的查询和文档\supercite{DBLP:journals/corr/abs-2504-08748}。
+随着多模态大模型的发展，检索增强生成也被扩展到多模态领域。多模态RAG（Multimodal RAG）能够处理文本、图像、音频等多种模态的查询和文档。
 
-多模态RAG面临的独特挑战包括：
+多模态RAG面临的独特挑战包括\supercite{DBLP:journals/corr/abs-2504-08748}：
 1. **跨模态检索** - 需要建立不同模态之间的语义关联，支持跨模态的相似性计算
 2. **多模态表示学习** - 需要学习统一的向量空间，使不同模态的表示能够相互比较
 3. **多模态融合** - 在生成阶段需要有效融合来自不同模态的检索结果
@@ -295,12 +295,12 @@ BM25是一种经典的信息检索算法，其相关性评分函数定义为：
 
 \subsection{智能体中的检索应用}
 
-随着大模型智能体能力的发展，检索被作为重要的工具集成到智能体系统中。智能体可以根据任务需求自主决定何时调用检索能力，以及如何使用检索结果\supercite{Wang_2024}。
+随着大模型智能体能力的发展，检索被作为重要的工具集成到智能体系统中\supercite{Wang_2024}。智能体可以根据任务需求自主决定何时调用检索能力，以及如何使用检索结果。
 
-检索在智能体中的应用模式包括：
-1. **知识查询** - 智能体通过检索获取实时或专业知识
-2. **多跳推理** - 通过多次检索和推理解决复杂问题
-3. **工具调用** - 智能体将检索作为工具调用的一部分，与其他工具协同工作
+检索在智能体中的应用模式包括\supercite{Wang_2024}：
+1. 知识查询 - 智能体通过检索获取实时或专业知识
+2. 多跳推理 - 通过多次检索和推理解决复杂问题
+3. 工具调用 - 智能体将检索作为工具调用的一部分，与其他工具协同工作
 
 代表性系统如Search-R1展示了智能体在思考过程中调用检索能力进行多跳推理的能力。这种自主检索能力显著提升了智能体在知识密集型任务中的表现。
 

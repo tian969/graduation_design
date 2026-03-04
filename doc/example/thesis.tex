@@ -25,6 +25,26 @@
 % 改用 style = gb7714-2015 并去掉之后两选项，详见 biblatex-gb7714-2015 的文档。
 \usepackage[backend = biber, style = caspervector, utf8, sorting = ecnyt]{biblatex}
 \usepackage{acronym}
+\usepackage{graphicx}   % 插入图片 \includegraphics
+\usepackage{xcolor}     % 颜色支持
+\usepackage{tcolorbox}  % 对话气泡框
+\usepackage{enumitem}   % 列表样式
+
+% --- 对话气泡样式 ---
+\newtcolorbox{UserBox}{
+  colback=blue!3,
+  colframe=blue!45!black,
+  boxrule=0.8pt,
+  arc=6pt,
+  left=10pt,right=10pt,top=8pt,bottom=8pt
+}
+\newtcolorbox{ModelBox}{
+  colback=green!3,
+  colframe=green!45!black,
+  boxrule=0.8pt,
+  arc=6pt,
+  left=10pt,right=10pt,top=8pt,bottom=8pt
+}
 % 对于 linespread 值的计算过程有兴趣的同学可以参考 pkuthss.cls。
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 % 按学校要求设定参考文献列表的段间距。
@@ -47,8 +67,8 @@
 	direction = {信息安全}, mentorlines = {2},
 	cmentor = {王平教授\\李文平教授},
 	ementor = {Prof.\ Somebody and Prof.\ Someone},
-	ckeywords = {其一，其二},
-	ekeywords = {First, Second},
+	ckeywords = {大语言模型，内容安全},
+	ekeywords = {LLM, Content Safety},
 	% 1：学术学位，2：专业学位，0：不显示学位类型。
 	degreetype = {2},
 	% 以下两项无双盲评审需求的用户可保持原状。
@@ -69,8 +89,7 @@
 
 	\texttt{\string\cite}、\texttt{\string\parencite} %
 	和 \texttt{\string\supercite} 三个命令分别产生%
-	未格式化的、带方括号的和上标且带方括号的引用标记：%
-	\cite{test-en}，\parencite{test-zh}、\supercite{test-en, test-zh}。
+	未格式化的、带方括号的和上标且带方括号的引用标记。
 
 	若格式审查时提示字号或其它格式细节问题，请启用 pkuthss 的 \texttt{ugly}
 	选项，同时可以考虑启用 biblatex-caspervector 的 \texttt{ugly} 选项

@@ -1,33 +1,29 @@
-@article{test-en,
-	author = {Author},
-	title = {Title},
-	journal = {Journal},
-	date = {2014-04-01},
-	language = {english},
-}
+% @article{test-en,
+% 	author = {Author},
+% 	title = {Title},
+% 	type = {J},
+% 	journal = {Journal},
+% 	date = {2014-04-01},
+% 	language = {english},
+% }
 
-@article{test-zh,
-	author = {作者},
-	title = {标题},
-	journal = {期刊},
-	date = {2014-04-01},
-	language = {chinese},
-}
+% @article{test-zh,
+% 	author = {作者},
+% 	title = {标题},
+% 	type = {J},
+% 	journal = {期刊},
+% 	date = {2014-04-01},
+% 	language = {chinese},
+% }
+
+
 
 @inproceedings{wang-adashield-eccv-2024,
   author = {Wang, Yu and Liu, Xiaogeng and Li, Yu and Chen, Muhao and Xiao, Chaowei},
   title = {AdaShield: Safeguarding Multimodal Large Language Models from Structure-Based Attack via Adaptive Shield Prompting},
+  type = {C},
   booktitle = {Computer Vision -- ECCV 2024},
   date = {2024},
-  language = {english},
-}
-
-@article{zeng2025glm,
-  author = {Zeng, Aohan and Lv, Xin and Zheng, Qinkai and Hou, Zhenyu and Chen, Bin and Xie, Chengxing and Wang, Cunxiang and Yin, Da and Zeng, Hao and Zhang, Jiajie},
-  title = {{GLM-4.5}: Agentic, Reasoning, and Coding (ARC) Foundation Models},
-  journal = {arXiv preprint},
-  archivePrefix = {arXiv},
-  date = {2025},
   language = {english},
 }
 
@@ -130,6 +126,15 @@
   language = {english},
 }
 
+@inproceedings{DBLP:conf/icml/ZongBYYH24,
+  author = {Yongshuo Zong and Ondrej Bohdal and Tingyang Yu and Yongxin Yang and Timothy M. Hospedales},
+  title = {Safety Fine-Tuning at (Almost) No Cost: A Baseline for Vision Large Language Models},
+  type = {C},
+  booktitle = {International Conference on Machine Learning (ICML) 2024},
+  date = {2024},
+  language = {english},
+}
+
 @article{Jain2024WhatMA,
   author = {Samyak Jain and Ekdeep Singh Lubana and Kemal Oksuz and Tom Joy and Philip H. S. Torr and Amartya Sanyal and Puneet Kumar Dokania},
   title = {What Makes and Breaks Safety Fine-tuning? A Mechanistic Study},
@@ -143,37 +148,44 @@
   title={Qwen3 technical report},
   author={Yang, An and Li, Anfeng and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Gao, Chang and Huang, Chengen and Lv, Chenxu and others},
   journal={arXiv preprint arXiv:2505.09388},
-  date={2025}
+  year={2025}
 }
 
 @article{kassianik2025llama,
   title={Llama-3.1-foundationai-securityllm-base-8b technical report},
   author={Kassianik, Paul and Saglam, Baturay and Chen, Alexander and Nelson, Blaine and Vellore, Anu and Aufiero, Massimo and Burch, Fraser and Kedia, Dhruv and Zohary, Avi and Weerawardhena, Sajana and others},
   journal={arXiv preprint arXiv:2504.21039},
-  date={2025}
+  year={2025}
 }
 
-
+@article{zeng2025glm,
+  title={Glm-4.5: Agentic, reasoning, and coding (arc) foundation models},
+  author={Zeng, Aohan and Lv, Xin and Zheng, Qinkai and Hou, Zhenyu and Chen, Bin and Xie, Chengxing and Wang, Cunxiang and Yin, Da and Zeng, Hao and Zhang, Jiajie and others},
+  journal={arXiv preprint arXiv:2508.06471},
+  year={2025}
+}
 
 @article{zhao2025qwen3guard,
   title={Qwen3guard technical report},
   author={Zhao, Haiquan and Yuan, Chenhan and Huang, Fei and Hu, Xiaomeng and Zhang, Yichang and Yang, An and Yu, Bowen and Liu, Dayiheng and Zhou, Jingren and Lin, Junyang and others},
   journal={arXiv preprint arXiv:2510.14276},
-  date={2025}
+  year={2025}
 }
 
 @article{Inan2023LlamaGL,
   title={Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations},
   author={Hakan Inan and K. Upasani and Jianfeng Chi and Rashi Rungta and Krithika Iyer and Yuning Mao and Michael Tontchev and Qing Hu and Brian Fuller and Davide Testuggine and Madian Khabsa},
   journal={ArXiv},
-  date={2023},
+  year={2023},
+  volume={abs/2312.06674},
   url={https://api.semanticscholar.org/CorpusID:266174345}
 }
 @article{Helff2024LLavaGuardVS,
   title={LLavaGuard: VLM-based Safeguards for Vision Dataset Curation and Safety Assessment},
   author={Lukas Helff and Felix Friedrich and Manuel Brack and Kristian Kersting and Patrick Schramowski},
   journal={ArXiv},
-  date={2024},
+  year={2024},
+  volume={abs/2406.05113},
   url={https://api.semanticscholar.org/CorpusID:270357548}
 }
 
@@ -181,7 +193,7 @@
   title={MLLM-as-a-Judge for Image Safety without Human Labeling},
   author={Zhenting Wang and Shuming Hu and Shiyu Zhao and Xiaowen Lin and Felix Juefei-Xu and Zhuowei Li and Ligong Han and Harihar Subramanyam and Li Chen and Jianfa Chen and Nan Jiang and Lingjuan Lyu and Shiqing Ma and Dimitris N. Metaxas and Ankit Jain},
   journal={2025 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-  date={2024},
+  year={2024},
   pages={14657-14666},
   url={https://api.semanticscholar.org/CorpusID:275212233}
 }
@@ -190,8 +202,33 @@
   title={SmoothLLM: Defending Large Language Models Against Jailbreaking Attacks},
   author={Alexander Robey and Eric Wong and Hamed Hassani and George Pappas},
   journal={Trans. Mach. Learn. Res.},
-  date={2023},
+  year={2023},
+  volume={2025},
   url={https://api.semanticscholar.org/CorpusID:263671542}
+}
+
+@inproceedings{DBLP:conf/iclr/AndriushchenkoC25,
+  author       = {Maksym Andriushchenko and
+                  Francesco Croce and
+                  Nicolas Flammarion},
+  title        = {Jailbreaking Leading Safety-Aligned LLMs with Simple Adaptive Attacks},
+  booktitle    = {The Thirteenth International Conference on Learning Representations,
+                  {ICLR} 2025, Singapore, April 24-28, 2025},
+  publisher    = {OpenReview.net},
+  year         = {2025},
+  url          = {https://openreview.net/forum?id=hXA8wqRdyV},
+  timestamp    = {Thu, 10 Jul 2025 01:00:00 +0200},
+  biburl       = {https://dblp.org/rec/conf/iclr/AndriushchenkoC25.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{DBLP:conf/iclr/AndriushchenkoC25,
+    author = {Maksym Andriushchenko and Francesco Croce and Nicolas Flammarion},
+    title = {Jailbreaking Leading Safety-Aligned LLMs with Simple Adaptive Attacks},
+    type = {C},
+    booktitle = {The Thirteenth International Conference on Learning Representations (ICLR 2025)},
+    date = {2025},
+    language = {english},
 }
 
 @article{DBLP:journals/corr/abs-2001-08361,
@@ -337,174 +374,15 @@
     date = {2024},
     language = {english},
 }
-@inproceedings{DBLP:conf/nips/Wei0SBIXCLZ22,
-  author = {Jason Wei and Xuezhi Wang and Dale Schuurmans and Maarten Bosma and Brian Ichter and Fei Xia and Ed H. Chi and Quoc V. Le and Denny Zhou},
-  title = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
-  booktitle = {Advances in Neural Information Processing Systems},
-  date = {2022}
-}
 
-@inproceedings{DBLP:conf/iclr/0002WSLCNCZ23,
-  author = {Xuezhi Wang and Jason Wei and Dale Schuurmans and Quoc V. Le and Ed H. Chi and Sharan Narang and Aakanksha Chowdhery and Denny Zhou},
-  title = {Self-Consistency Improves Chain of Thought Reasoning in Language Models},
-  booktitle = {International Conference on Learning Representations},
-  date = {2023}
-}
+% @online{文小言,
+%   author       = {文心一言},
+%   title        = {文心一言},
+%   year         = {2026},
+%   date         = {2026-03-03},
+%   url          = {https://yiyan.baidu.com/},
+%   urldate      = {2026-03-03},
+%   language     = {chinese},
+% }
 
-@inproceedings{DBLP:conf/nips/YaoYZS00N23,
-  author = {Shunyu Yao and Dian Yu and Jeffrey Zhao and Izhak Shafran and Tom Griffiths and Yuan Cao and Karthik Narasimhan},
-  title = {Tree of Thoughts: Deliberate Problem Solving with Large Language Models},
-  booktitle = {Advances in Neural Information Processing Systems},
-  date = {2023}
-}
-
-@inproceedings{DBLP:conf/iclr/YaoZYDSN023,
-  author = {Shunyu Yao and Jeffrey Zhao and Dian Yu and Nan Du and Izhak Shafran and Karthik R. Narasimhan and Yuan Cao},
-  title = {ReAct: Synergizing Reasoning and Acting in Language Models},
-  booktitle = {International Conference on Learning Representations},
-  date = {2023}
-}
-
-@inproceedings{DBLP:conf/aaai/ChenZSHSGG24,
-  author = {Zhenfang Chen and Qinhong Zhou and Yikang Shen and Yining Hong and Zhiqing Sun and Dan Gutfreund and Chuang Gan},
-  title = {Visual Chain-of-Thought Prompting for Knowledge-Based Visual Reasoning},
-  booktitle = {AAAI Conference on Artificial Intelligence},
-  date = {2024}
-}
-
-@inproceedings{DBLP:conf/nips/LewisPPPKGKLYR020,
-  author = {Patrick Lewis and Ethan Perez and Aleksandra Piktus and Fabio Petroni and Vladimir Karpukhin and Naman Goyal and Heinrich Küttler and Mike Lewis and Wen-tau Yih and Tim Rocktäschel and Sebastian Riedel and Douwe Kiela},
-  title = {Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks},
-  booktitle = {Advances in Neural Information Processing Systems},
-  date = {2020}
-}
-
-@inproceedings{DBLP:conf/emnlp/KarpukhinOMLWEC20,
-  author = {Vladimir Karpukhin and Barlas Oguz and Sewon Min and Patrick Lewis and Ledell Wu and Sergey Edunov and Danqi Chen and Wen-tau Yih},
-  title = {Dense Passage Retrieval for Open-Domain Question Answering},
-  booktitle = {Conference on Empirical Methods in Natural Language Processing},
-  date = {2020}
-}
-
-@article{DBLP:journals/corr/abs-2504-08748,
-  author = {Lang Mei and Siyu Mo and Zhihan Yang and Chong Chen},
-  title = {A Survey of Multimodal Retrieval-Augmented Generation},
-  journal = {arXiv preprint},
-  date = {2025}
-}
-@inproceedings{DBLP:conf/iclr/AndriushchenkoC25,
-  author = {Maksym Andriushchenko and Francesco Croce and Nicolas Flammarion},
-  title = {Jailbreaking Leading Safety-Aligned LLMs with Simple Adaptive Attacks},
-  booktitle = {International Conference on Learning Representations},
-  date = {2025}
-}
-@article{Qwen3-Technical-Report,
-	author = {An Yang and Anfeng Li and Baosong Yang and Beichen Zhang and Binyuan Hui and Bo Zheng and Bowen Yu and Chang Gao and Chengen Huang and Chenxu Lv and Chujie Zheng and Dayiheng Liu and Fan Zhou and Fei Huang and Feng Hu and Hao Ge and Haoran Wei and Huan Lin and Jialong Tang and Jian Yang and Jianhong Tu and Jianwei Zhang and Jian Yang and Jiaxi Yang and Jingren Zhou and Junyang Lin and Kai Dang and Keqin Bao and Kexin Yang and Le Yu and Lianghao Deng and Mei Li and Mingfeng Xue and Mingze Li and Pei Zhang and Peng Wang and Qin Zhu and Rui Men and Ruize Gao and Shixuan Liu and Shuang Luo and Tianhao Li and Tianyi Tang and Wenbiao Yin and Xingzhang Ren and Xinyu Wang and Xinyu Zhang and Xuancheng Ren and Yang Fan and Yang Su and Yichang Zhang and Yinger Zhang and Yu Wan and Yuqiong Liu and Zekun Wang and Zeyu Cui and Zhenru Zhang and Zhipeng Zhou and Zihan Qiu},
-	title = {Qwen3 Technical Report},
-	journal = {CoRR},
-	date = {2025},
-	language = {english},
-}
-
-@article{DBLP:journals/corr/abs-2511-21631,
-	author = {Shuai Bai and Yuxuan Cai and Ruizhe Chen and Keqin Chen and Xionghui Chen and Zesen Cheng and Lianghao Deng and Wei Ding and Chang Gao and Chunjiang Ge and Wenbin Ge and Zhifang Guo and Qidong Huang and Jie Huang and Fei Huang and Binyuan Hui and Shutong Jiang and Zhaohai Li and Mingsheng Li and Mei Li and Kaixin Li and Zicheng Lin and Junyang Lin and Xuejing Liu and Jiawei Liu and Chenglong Liu and Yang Liu and Dayiheng Liu and Shixuan Liu and Dunjie Lu and Ruilin Luo and Chenxu Lv and Rui Men and Lingchen Meng and Xuancheng Ren and Xingzhang Ren and Sibo Song and Yuchong Sun and Jun Tang and Jianhong Tu and Jianqiang Wan and Peng Wang and Pengfei Wang and Qiuyue Wang and Yuxuan Wang and Tianbao Xie and Yiheng Xu and Haiyang Xu and Jin Xu and Zhibo Yang and Mingkun Yang and Jianxin Yang and An Yang and Bowen Yu and Fei Zhang and Hang Zhang and Xi Zhang and Bo Zheng and Humen Zhong and Jingren Zhou and Fan Zhou and Jing Zhou and Yuanzhi Zhu and Ke Zhu},
-	title = {Qwen3-VL Technical Report},
-	journal = {CoRR},
-	date = {2025},
-	language = {english},
-}
-
-@article{DBLP:journals/corr/abs-2312-14238,
-	author = {Zhe Chen and Jiannan Wu and Wenhai Wang and Weijie Su and Guo Chen and Sen Xing and Muyan Zhong and Qinglong Zhang and Xizhou Zhu and Lewei Lu and Bin Li and Ping Luo and Tong Lu and Yu Qiao and Jifeng Dai},
-	title = {InternVL: Scaling up Vision Foundation Models and Aligning for Generic Visual-Linguistic Tasks},
-	journal = {CoRR},
-	date = {2023},
-	language = {english},
-}
-
-@article{DBLP:journals/corr/abs-2508-18265,
-	author = {Weiyun Wang and Zhangwei Gao and Lixin Gu and Hengjun Pu and Long Cui and Xingguang Wei and Zhaoyang Liu and Linglin Jing and Shenglong Ye and Jie Shao and Zhaokai Wang and Zhe Chen and Hongjie Zhang and Ganlin Yang and Haomin Wang and Qi Wei and Jinhui Yin and Wenhao Li and Erfei Cui and Guanzhou Chen and Zichen Ding and Changyao Tian and Zhenyu Wu and JingJing Xie and Zehao Li and Bowen Yang and Yuchen Duan and Xuehui Wang and Zhi Hou and Haoran Hao and Tianyi Zhang and Songze Li and Xiangyu Zhao and Haodong Duan and Nianchen Deng and Bin Fu and Yinan He and Yi Wang and Conghui He and Botian Shi and Junjun He and Yingtong Xiong and Han Lv and Lijun Wu and Wenqi Shao and Kaipeng Zhang and Huipeng Deng and Biqing Qi and Jiaye Ge and Qipeng Guo and Wenwei Zhang and Songyang Zhang and Maosong Cao and Junyao Lin and Kexian Tang and Jianfei Gao and Haian Huang and Yuzhe Gu and Chengqi Lyu and Huanze Tang and Rui Wang and Haijun Lv and Wanli Ouyang and Limin Wang and Min Dou and Xizhou Zhu and Tong Lu and Dahua Lin and Jifeng Dai and Weijie Su and Bowen Zhou and Kai Chen and Yu Qiao and Wenhai Wang and Gen Luo},
-	title = {InternVL3.5: Advancing Open-Source Multimodal Models in Versatility, Reasoning, and Efficiency},
-	journal = {CoRR},
-	date = {2025},
-	language = {english},
-}
-@article{DBLP:journals/corr/abs-2504-10479,
-	author = {Jinguo Zhu and Weiyun Wang and Zhe Chen and Zhaoyang Liu and Shenglong Ye and Lixin Gu and Hao Tian and Yuchen Duan and Weijie Su and Jie Shao and Zhangwei Gao and Erfei Cui and Xuehui Wang and Yue Cao and Yangzhou Liu and Xingguang Wei and Hongjie Zhang and Haomin Wang and Weiye Xu and Hao Li and Jiahao Wang and Nianchen Deng and Songze Li and Yinan He and Tan Jiang and Jiapeng Luo and Yi Wang and Conghui He and Botian Shi and Xingcheng Zhang and Wenqi Shao and Junjun He and Yingtong Xiong and Wenwen Qu and Peng Sun and Penglong Jiao and Han Lv and Lijun Wu and Kaipeng Zhang and Huipeng Deng and Jiaye Ge and Kai Chen and Limin Wang and Min Dou and Lewei Lu and Xizhou Zhu and Tong Lu and Dahua Lin and Yu Qiao and Jifeng Dai and Wenhai Wang},
-	title = {InternVL3: Exploring Advanced Training and Test-Time Recipes for Open-Source Multimodal Models},
-	journal = {CoRR},
-	date = {2025},
-	language = {english},
-}
-
-@article{DBLP:journals/corr/abs-2601-11659,
-	author = {},
-	title = {The Llama 4 Herd: Architecture, Training, Evaluation, and Deployment Notes},
-	journal = {CoRR},
-	date = {2026},
-	language = {english},
-}
-
-@article{DBLP:journals/corr/abs-2601-21051,
-	author = {Zhuoran Yang and Ed Li and Jianliang He and Aman Priyanshu and Baturay Saglam and Paul Kassianik and Sajana Weerawardhena and Anu Vellore and Blaine Nelson and Neusha Javidnia and Arthur Goldblatt and Fraser Burch and Avi Zohary and Assaf Eisenman and Mahdi Sabbaghi and Supriti Vijay and Rahim Dharssi and Dhruv Kedia and Kojin Oshiba and Yaron Singer and Amin Karbasi},
-	title = {Llama-3.1-FoundationAI-SecurityLLM-Reasoning-8B Technical Report},
-	journal = {CoRR},
-	date = {2026},
-	language = {english},
-}
-
-@article{DBLP:journals/corr/abs-2407-21772,
-	author = {Wenjun Zeng and Yuchi Liu and Ryan Mullins and Ludovic Peran and Joe Fernandez and Hamza Harkous and Karthik Narasimhan and Drew Proud and Piyush Kumar and Bhaktipriya Radharapu and Olivia Sturman and Oscar Wahltinez},
-	title = {ShieldGemma: Generative AI Content Moderation Based on Gemma},
-	journal = {CoRR},
-	date = {2024},
-	language = {english},
-}
-
-@article{DBLP:conf/acl/ParrishCNPPTHB22,
-	author = {Alicia Parrish and Angelica Chen and Nikita Nangia and Vishakh Padmakumar and Jason Phang and Jana Thompson and Phu Mon Htut and Samuel R. Bowman},
-	title = {BBQ: A hand-built bias benchmark for question answering},
-	journal = {Findings of the Association for Computational Linguistics: ACL 2022},
-	date = {2022},
-	language = {english},
-}
-
-@inproceedings{DBLP:conf/fat/BenderGMS21,
-	author = {Emily M. Bender and Timnit Gebru and Angelina McMillan-Major and Shmargaret Shmitchell},
-	title = {On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?},
-	journal = {ACM Conference on Fairness, Accountability, and Transparency (FAccT 2021)},
-	date = {2021},
-	language = {english},
-}
-
-@inproceedings{DBLP:conf/acl/BlodgettBDW20,
-	author = {Su Lin Blodgett and Solon Barocas and Hal Daumé III and Hanna M. Wallach},
-	title = {Language (Technology) is Power: A Critical Survey of "Bias" in NLP},
-	journal = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL 2020)},
-	date = {2020},
-	language = {english},
-}
-
-@article{DBLP:journals/csur/JiLFYSXIBMF23,
-	author = {Ziwei Ji and Nayeon Lee and Rita Frieske and Tiezheng Yu and Dan Su and Yan Xu and Etsuko Ishii and Yejin Bang and Andrea Madotto and Pascale Fung},
-	title = {Survey of Hallucination in Natural Language Generation},
-	journal = {ACM Computing Surveys},
-	date = {2023},
-	language = {english},
-}
-
-@article{DBLP:conf/emnlp/LiCZNW23,
-	author = {Junyi Li and Xiaoxue Cheng and Xin Zhao and Jian-Yun Nie and Ji-Rong Wen},
-	title = {HaluEval: A Large-Scale Hallucination Evaluation Benchmark for Large Language Models},
-	journal = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP 2023)},
-	date = {2023},
-	language = {english},
-}
-
-@inproceedings{DBLP:conf/nips/HanREJL00D24,
-	author = {Seungju Han and Kavel Rao and Allyson Ettinger and Liwei Jiang and Bill Yuchen Lin and Nathan Lambert and Yejin Choi and Nouha Dziri},
-	title = {WildGuard: Open One-stop Moderation Tools for Safety Risks, Jailbreaks, and Refusals of LLMs},
-	journal = {Advances in Neural Information Processing Systems (NeurIPS 2024)},
-	date = {2024},
-	language = {english},
-}
+% vim:ts=4:sw=4
