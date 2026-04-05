@@ -61,12 +61,12 @@
 	% 长标题可用 \thssnl 强制换行，不能用“\\”（双盲版会出错）。
 	ctitle = {面向多模态理解的对话安全模型构建与应用},
 	etitle = {Construction and Application of a Dialogue Safety Model for Multimodal Understanding},
-	cauthor = {田祖杰}, eauthor = {Zujie Tian}, date = {2026年2月},
+	cauthor = {田祖杰}, eauthor = {Zujie Tian}, date = {二〇二六~年~四~月},
 	studentid = {2301210407}, school = {软件与微电子学院},
-	cmajor = {软件工程专业}, emajor = {Software Engineering},
-	direction = {信息安全}, mentorlines = {2},
-	cmentor = {王平\\李文婷},
-	ementor = {Prof.\ Ping Wang and Prof.\ Wenting Li},
+	cmajor = {软件工程}, emajor = {Software Engineering},
+	direction = {软件工程}, mentorlines = {2},
+	cmentor = {王平~~教授\\李文婷~~讲师},
+	ementor = {Prof.\ Ping Wang and Lec.\ Wenting Li},
 	ckeywords = {大语言模型，内容安全},
 	ekeywords = {LLM, Content Safety},
 	% 1：学术学位，2：专业学位，0：不显示学位类型。
@@ -81,7 +81,7 @@
 % 普通用户可删除此段，并相应地删除 chap/*.tex 中的
 % “\pkuthssffaq % 中文测试文字。”一行。
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit}
 \usepackage{color}
 \usepackage{booktabs}
 \def\pkuthssffaq{%
@@ -138,6 +138,7 @@
 	\include{chap/chap3}
 	\include{chap/chap4}
 	\include{chap/chap5}
+	\include{chap/chap6}
 
 	% 正文中的附录部分。
 	\appendix

@@ -1,105 +1,82 @@
 % Copyright (c) 2014,2016 Casper Ti. Vector
 % Public domain.
 \chapter{相关工作}
-% ④ 每个大节结尾加一个“本节小结”
-\section{大模型微调}
-\subsection{预训练范式与能力形成}
+本章围绕本文研究所涉及的关键技术基础与代表性研究进展展开综述。首先介绍大模型微调与安全对齐的主要技术路线，其次梳理思维链推理及其在安全场景中的演进，随后总结通用大模型在实际应用中面临的核心风险与现有防御方法，为后续提出多模态安全对齐方法提供理论依据与研究参照。
 
-大语言模型的成功建立在大规模预训练范式基础之上。通过在海量文本语料上进行自监督学习，模型能够习得语言的结构、语义和世界知识。缩放定律揭示了模型性能与计算量、参数规模和数据量之间的幂律关系，为模型设计提供了理论指导\supercite{DBLP:journals/corr/abs-2001-08361}。缩放定律可以表示为：
+\section{大语言模型训练范式}
+\subsection{预训练范式与缩放定律(Scaling Laws)}
+
+大语言模型的成功建立在大规模预训练范式基础之上。通过在海量文本语料上进行自监督学习，模型能够习得语言的结构、语义和世界知识。
+缩放定律揭示了模型性能与计算量、参数规模和数据量之间的幂律关系，为模型设计提供了理论指导\supercite{DBLP:journals/corr/abs-2001-08361}。缩放定律可以表示为：
 \begin{equation}
 L(C, D, N) = \left(\frac{N_c}{N}\right)^\alpha + \left(\frac{D_c}{D}\right)^\beta
 \end{equation}
 其中$L$表示损失函数，$C$表示计算量，$D$表示数据量，$N$表示模型参数量，$N_c$和$D_c$是临界值，$\alpha$和$\beta$是幂律指数。
 
-在预训练阶段，模型主要采用自监督学习目标，如掩码语言建模（Masked Language Modeling）和因果语言建模（Causal Language Modeling）。
+在预训练阶段，模型主要采用自监督学习目标，如掩码语言建模（Masked Language Modeling，MLM）和因果语言建模（Causal Language Modeling，CLM）。
 
-掩码语言建模的目标函数为：
+掩码语言建模（MLM）的目标函数为：
 \begin{equation}
-\mathcal{L}_{\text{MLM}} = -\sum_{i \in \mathcal{M}} \log P(x_i \mid \mathbf{x}_{\setminus \mathcal{M}})
+% \mathcal{L}_{\text{MLM}} = -\sum_{i \in \mathcal{M}} \log P(x_i \mid \mathbf{x}_{\setminus \mathcal{M}})
+L_{\mathrm{MLM}} = -\sum_{i \in M} \log P(x_i \mid x_{-M})
 \end{equation}
-其中$\mathcal{M}$表示被掩码的位置集合，$\mathbf{x}_{\setminus \mathcal{M}}$表示未被掩码的上下文。
+其中$M$表示被掩码的位置集合，$x_{-M}$表示去除掩码位置后的上下文。
 
 因果语言建模的目标函数为：
 \begin{equation}
-\mathcal{L}_{\text{CLM}} = -\sum_{t=1}^{T} \log P(x_t \mid \mathbf{x}_{<t})
+L_{\mathrm{CLM}} = -\sum_{t=1}^{T} \log P(x_t \mid x_{<t})
 \end{equation}
-其中$\mathbf{x}_{<t}$表示时刻$t$之前的所有token。随着模型规模扩大，模型展现出涌现能力，即在小规模模型中不存在的能力在大规模模型中突然出现\supercite{wei2022emergentabilitieslargelanguage}。这些能力包括上下文学习、指令遵循和复杂推理等，为后续微调奠定了基础。
+其中$x_{<t}$表示时刻$t$之前的所有 token。
+随着模型规模扩大，模型会展现出涌现能力，即在小规模模型中不存在的能力在大规模模型中突然出现\supercite{wei2022emergentabilitieslargelanguage}。
+这些能力包括上下文学习、指令遵循和复杂推理等。
+相关研究工作证明了预训练语言模型作为少样本学习器的强大能力，即无需显式训练即可通过提供示例来完成新任务\supercite{DBLP:conf/nips/BrownMRSKDNSSAA20}。这种能力使得大模型具备广泛的适用性，
+但也暴露了其在指令遵循方面的不足，为指令微调的发展提供了动机。
 
-相关研究工作证明了预训练语言模型作为少样本学习器的强大能力，即无需显式训练即可通过提供示例来完成新任务\supercite{DBLP:conf/nips/BrownMRSKDNSSAA20}。这种能力使得大模型具备广泛的适用性，但也暴露了其在指令遵循方面的不足，为指令微调的发展提供了动机。
-
-\subsection{指令微调}
-
+\subsection{指令微调技术}
 指令微调是指在预训练基础上，通过监督学习训练模型遵循自然语言指令完成特定任务的方法\supercite{DBLP:conf/iclr/WeiBZGYLDDL22}。相关研究首次系统性地研究了指令微调的效果，证明了通过多任务指令微调可以显著提升模型的零样本和少样本性能。
+指令微调的核心思想是将各种NLP任务统一为指令-响应格式，使模型学习到通用的指令遵循能力。相关研究发现随着模型规模和指令数据量的增加，模型的指令遵循能力持续提升\supercite{DBLP:journals/corr/abs-2210-11416}。
+在实践层面，相关研究证明了即使使用相对较小的指令数据集，也能在预训练模型基础上获得良好的指令遵循能力\supercite{DBLP:journals/corr/abs-2305-15011}。这激发了开源社区对指令微调模型的广泛研究和应用。
+现如今指令微调已经成为面对不同领域下游任务的首选, 并在工业界得到了广泛应用。
+% TODO: 补后果的几篇文献, 指令微调需要数学公式
+然而，指令微调仍面临挑战，指令微调的数据质量高低直接影响模型的性能，大规模进行指令微调会导致灾难性遗忘, 训练本身也极其容易出现过拟合, 欠拟合等现象, 严重影响最终模型表现。
 
-指令微调的核心思想是将各种NLP任务统一为指令-响应格式，使模型学习到通用的指令遵循能力。相关研究进一步研究了指令微调的缩放行为，发现随着模型规模和指令数据量的增加，模型的指令遵循能力持续提升\supercite{DBLP:journals/corr/abs-2210-11416}。
-
-在实践层面，相关研究证明了即使使用相对较小的指令数据集，也能在预训练模型基础上获得良好的指令遵循能力\supercite{DBLP:journals/corr/abs-2305-15011}。这激发了开源社区对指令微调模型的广泛研究和应用。然而，指令微调仍面临挑战，包括数据质量对性能的敏感性、任务多样性不足导致的泛化能力有限等问题。
-
-\subsection{人类反馈强化学习}
-
-尽管指令微调提升了模型遵循指令的能力，但模型的输出仍可能与人类价值观和期望存在偏差。人类反馈强化学习（Reinforcement Learning from Human Feedback, RLHF）通过引入人类偏好信号，使模型输出与人类价值观对齐。
-
-RLHF通常包含三个阶段：首先使用人类标注的偏好数据训练奖励模型（Reward Model），然后使用强化学习算法（如PPO）优化策略模型，使生成的输出获得更高的奖励\supercite{DBLP:conf/nips/Ouyang0JAWMZASR22}。相关研究进一步将RLHF扩展到有害性（Harmlessness）对齐，训练出既有帮助性又无害的助手\supercite{DBLP:journals/corr/abs-2204-05862}。
-
-Anthropic团队提出的宪法人工智能（Constitutional AI, CAI）方法探索了利用AI反馈替代部分人类反馈的可能性，通过预定义的宪法原则指导模型自我批评和修正，降低了RLHF对大规模人类标注的依赖\supercite{DBLP:journals/corr/abs-2212-08073}。
-
-然而，RLHF面临多重挑战。一方面，训练过程复杂且不稳定，需要大量高质量的偏好数据；另一方面，强化学习优化可能导致训练不稳定和灾难性遗忘。此外，RLHF可能引入"对齐税"（Alignment Tax），即对齐过程可能降低模型在通用任务上的性能。
+\subsection{基于人类反馈的强化学习技术}
+尽管指令微调提升了模型遵循指令的能力，但模型的输出仍可能与人类价值观和期望存在偏差。人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)则通过引入人类偏好信号，使模型输出与人类价值观对齐。
+人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)通常包含三个阶段：首先使用人类标注的偏好数据训练奖励模型（Reward Model，RM），然后使用强化学习算法（如PPO(Proximal Policy Optimization)）优化策略模型，使生成的输出获得更高的奖励\supercite{DBLP:conf/nips/Ouyang0JAWMZASR22}。相关研究进一步将人类反馈强化学习(RLHF)扩展到有害性（Harmlessness）对齐，训练出既有帮助性又无害的助手\supercite{DBLP:journals/corr/abs-2204-05862}。
+Anthropic团队提出的宪法人工智能(Constitutional AI，CAI)方法探索了利用AI反馈替代部分人类反馈的可能性，通过预定义的宪法原则指导模型自我批评和修正，降低了人类反馈强化学习(RLHF)对大规模人类标注的依赖\supercite{DBLP:journals/corr/abs-2212-08073}。
+同样, 相关研究也指出RLHF面临多重挑战。一方面，训练过程复杂且不稳定，需要大量高质量的偏好数据；另一方面，强化学习优化可能导致训练不稳定和灾难性遗忘。此外，RLHF会引入“对齐税”（Alignment Tax），即对齐偏好的过程可能降低模型在通用任务上的性能。
 
 \subsection{直接偏好优化与替代对齐方法}
-
-为克服RLHF的局限性，研究者提出了多种替代方案。直接偏好优化（Direct Preference Optimization, DPO）通过将奖励模型隐式地表示为策略函数的函数，避免了显式训练奖励模型和强化学习过程，显著简化了训练流程\supercite{DBLP:conf/nips/RafailovSMMEF23}。
-
+为克服人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)的局限性，研究者提出了多种替代方案。直接偏好优化(Direct Preference Optimization，DPO)通过将奖励模型隐式地表示为策略函数的函数，避免了显式训练奖励模型和强化学习过程，显著简化了训练流程\supercite{DBLP:conf/nips/RafailovSMMEF23}。
 DPO的核心思想是直接在策略空间优化偏好数据，通过分析偏好对中的正负样本，推导出策略优化的目标函数。DPO的目标函数可以表示为：
 \begin{equation}
-\mathcal{L}_{\text{DPO}}(\pi_\theta; x, y_w, y_l) = -\mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_\theta(y_l \mid x)} \right) \right]
+L_{\mathrm{DPO}}(\pi_\theta; x, y_w, y_l) = -E_{(x, y_w, y_l) \sim D} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_\theta(y_l \mid x)} \right) \right]
 \end{equation}
-其中$\pi_\theta$表示参数为$\theta$的策略模型，$x$表示输入，$y_w$和$y_l$分别表示偏好对中的正样本和负样本，$\beta$是温度参数，$\sigma$表示sigmoid函数。这种方法在保持与RLHF相当性能的同时，具有更好的稳定性和计算效率。Kahneman-Tversky优化（KTO）进一步简化了偏好数据的需求，仅需单个样本的二元反馈即可进行有效优化\supercite{DBLP:journals/corr/abs-2402-01306}。
+其中$\pi_\theta$表示参数为$\theta$的策略模型，$x$表示输入，$y_w$和$y_l$分别表示偏好对中的正样本和负样本，$\beta$是温度参数，$\sigma$表示sigmoid函数。这种方法在保持与人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)相当性能的同时，具有更好的稳定性和计算效率。Kahneman-Tversky优化(Kahneman-Tversky Optimization，KTO)进一步简化了偏好数据的需求，仅需单个样本的二元反馈即可进行有效优化\supercite{DBLP:journals/corr/abs-2402-01306}。
+除了DPO和KTO，还有其他偏好优化方法，如身份偏好优化(Identity Preference Optimization，IPO)和相对优势优化(Relative Advantage Optimization，RAO)等。这些方法各有优劣，在不同场景下表现出不同的特性。
 
-除了DPO和KTO，还有其他偏好优化方法，如身份偏好优化（Identity Preference Optimization, IPO）和相对优势优化（Relative Advantage Optimization, RAO）等。这些方法各有优劣，在不同场景下表现出不同的特性。
+% \subsection{多模态模型微调与对齐挑战}
+% 随着视觉语言模型（Vision-Language Models, VLM）的发展，多模态模型的微调与对齐成为研究热点。视觉指令微调（Visual Instruction Tuning）方法，通过构建图像-文本指令对，使预训练的语言模型能够理解和生成视觉内容\supercite{DBLP:conf/nips/LiuLWL23a}。
+% 多模态微调面临独特的挑战。首先，需要实现视觉编码器和语言模型之间的有效对齐，使视觉特征能够被语言模型理解和利用。BLIP-2方法通过冻结视觉编码器和语言模型，仅训练轻量级的查询变换器（Querying Transformer），实现了高效的视觉-语言对齐\supercite{DBLP:conf/icml/0008LSH23}。
+% 其次，多模态指令数据的构建比纯文本指令数据更为复杂，需要同时考虑图像和文本的语义关联。此外，多模态模型还面临跨模态越狱攻击等新的安全威胁，需要特殊的对齐策略。
 
-\subsection{多模态模型微调与对齐挑战}
-
-随着视觉语言模型（Vision-Language Models, VLM）的发展，多模态模型的微调与对齐成为研究热点。视觉指令微调（Visual Instruction Tuning）方法，通过构建图像-文本指令对，使预训练的语言模型能够理解和生成视觉内容\supercite{DBLP:conf/nips/LiuLWL23a}。
-
-多模态微调面临独特的挑战。首先，需要实现视觉编码器和语言模型之间的有效对齐，使视觉特征能够被语言模型理解和利用。BLIP-2方法通过冻结视觉编码器和语言模型，仅训练轻量级的查询变换器（Querying Transformer），实现了高效的视觉-语言对齐\supercite{DBLP:conf/icml/0008LSH23}。
-
-其次，多模态指令数据的构建比纯文本指令数据更为复杂，需要同时考虑图像和文本的语义关联。此外，多模态模型还面临跨模态越狱攻击等新的安全威胁，需要特殊的对齐策略。
-
-\subsection{安全对齐的特殊性与对齐税问题}
-
-安全对齐是大模型对齐的特殊且重要方面。与有用性对齐不同，安全对齐的目标是阻止模型生成有害内容，这与模型内生的指令遵循能力存在本质冲突\supercite{zeng2025glm}。这种冲突导致安全对齐面临"过度拒绝"（Overrefusal）问题，即模型拒绝回答合法的良性请求。
-
-相关研究表明，在几乎不增加成本的情况下进行安全微调可以显著提升模型的安全性，但同时也可能导致模型有用性的下降，即所谓的"对齐税"\supercite{DBLP:conf/icml/ZongBYYH24}。机制性研究发现，安全微调的机制和效果与数据质量、模型架构等因素密切相关\supercite{Jain2024WhatMA, DBLP:conf/nips/JainLOJ0SD24}。
-
-多模态模型的安全对齐更为复杂。相关研究证明了即使是经过安全对齐的领先大语言模型，也可能通过简单的自适应攻击被越狱\supercite{DBLP:conf/iclr/AndriushchenkoC25}。在多模态场景下，攻击者可以利用图像等视觉模态绕过文本层面的安全防护。
-
-为了应对这些挑战，研究者提出了多种方法，包括推理时安全控制、安全模块化训练、安全推理链等\supercite{DBLP:journals/corr/abs-2405-16833}。这些方法各有侧重，旨在在保持模型有用性的同时提升安全性。
-
-\subsection{本节小结}
-
-本节系统介绍了大模型微调与对齐的基础知识。预训练为模型提供了强大的语言理解和生成能力，指令微调进一步提升了模型遵循指令的能力，RLHF和DPO等方法通过引入人类偏好信号实现价值观对齐。多模态模型的微调与对齐面临跨模态对齐和特殊安全挑战。安全对齐作为对齐的重要方面，需要平衡安全性与有用性，避免过度拒绝和对齐税问题。这些技术和挑战为后续章节的研究提供了基础。
+% \subsection{安全对齐的特殊性与对齐税问题}
+% 安全对齐是大模型对齐的特殊且重要方面。与有用性对齐不同，安全对齐的目标是阻止模型生成有害内容，这与模型内生的指令遵循能力存在本质冲突\supercite{zeng2025glm}。这种冲突导致安全对齐面临“过度拒绝”（Overrefusal）问题，即模型拒绝回答合法的良性请求。
+% 相关研究表明，在几乎不增加成本的情况下进行安全微调可以显著提升模型的安全性，但同时也可能导致模型有用性的下降，即所谓的“对齐税”\supercite{DBLP:conf/icml/ZongBYYH24}。机制性研究发现，安全微调的机制和效果与数据质量、模型架构等因素密切相关\supercite{Jain2024WhatMA, DBLP:conf/nips/JainLOJ0SD24}。
+% 多模态模型的安全对齐更为复杂。相关研究证明了即使是经过安全对齐的领先大语言模型，也可能通过简单的自适应攻击被越狱\supercite{DBLP:conf/iclr/AndriushchenkoC25}。在多模态场景下，攻击者可以利用图像等视觉模态绕过文本层面的安全防护。
+% 为了应对这些挑战，研究者提出了多种方法，包括推理时安全控制、安全模块化训练、安全推理链等\supercite{DBLP:journals/corr/abs-2405-16833}。这些方法各有侧重，旨在在保持模型有用性的同时提升安全性。
 
 \section{大模型思维链发展}
 \subsection{思维链的提出}
-
-思维链（Chain-of-Thought, CoT）推理是一种提升大模型推理能力的技术。其核心思想是通过在最终答案之前生成中间推理步骤，引导模型进行逐步推理而非直接跳跃到答案。研究发现，通过在少样本提示中包含推理过程示例，能够显著提升模型在算术推理、常识推理等复杂任务上的性能\supercite{DBLP:conf/nips/Wei0SBIXCLZ22}。
-
-CoT推理的优势在于多个方面。首先，它利用了模型在预训练过程中学到的逻辑推理能力，将复杂问题分解为更易处理的子问题。其次，中间推理步骤提供了可解释性，使模型的决策过程更加透明。然而，CoT推理也存在局限性，当推理路径过长或推理步骤出现错误时，最终答案的正确性会受到影响。
-
+思维链(Chain-of-Thought，CoT)推理是一种提升大模型推理能力的技术。其核心思想是通过在最终答案之前生成中间推理步骤，引导模型进行逐步推理而非直接跳跃到答案。研究发现，通过在少样本提示中包含推理过程示例，能够显著提升模型在算术推理、常识推理等复杂任务上的性能\supercite{DBLP:conf/nips/Wei0SBIXCLZ22}。
+思维链(Chain-of-Thought，CoT)推理的优势在于多个方面。首先，它利用了模型在预训练过程中学到的逻辑推理能力，将复杂问题分解为更易处理的子问题。其次，中间推理步骤提供了可解释性，使模型的决策过程更加透明。然而，思维链(Chain-of-Thought，CoT)推理也存在局限性，当推理路径过长或推理步骤出现错误时，最终答案的正确性会受到影响。
 \subsection{自洽性方法}
-
 自洽性（Self-Consistency）方法旨在解决CoT推理中的不确定性问题。该方法的核心思想是：对于同一问题，通过采样生成多个不同的推理路径，然后通过多数投票或其他聚合方式确定最终答案\supercite{DBLP:conf/iclr/0002WSLCNCZ23}。
-
 自洽性方法基于一个关键观察：虽然单个推理路径可能包含错误，但多个独立推理路径的正确答案往往会趋于一致。因此，通过采样多条推理路径并选择出现频率最高的答案，可以有效降低推理错误率。实验表明，自洽性方法在算术推理和符号推理等任务上显著优于标准的CoT方法。
-
 自洽性方法的缺点在于计算开销较大，需要对每个问题生成多个推理路径。此外，当问题存在多个合理答案或推理空间复杂时，多数投票策略可能失效。
-
 \subsection{思维树方法}
-
-思维树（Tree-of-Thought, ToT）方法将CoT推理进一步扩展到树形结构，使模型能够进行更加复杂的推理过程。与线性推理链不同，ToT允许模型在推理过程中探索多个可能的分支，并通过评估和回溯机制选择最优路径\supercite{DBLP:conf/nips/YaoYZS00N23}。
-
+思维树(Tree-of-Thought，ToT)方法将思维链(Chain-of-Thought，CoT)推理进一步扩展到树形结构，使模型能够进行更加复杂的推理过程。与线性推理链不同，思维树(Tree-of-Thought，ToT)允许模型在推理过程中探索多个可能的分支，并通过评估和回溯机制选择最优路径\supercite{DBLP:conf/nips/YaoYZS00N23}。
 ToT方法通常包含以下几个步骤：首先，模型将问题分解为多个子问题或中间步骤；其次，对于每个子问题，模型生成多个候选方案；然后，模型对这些候选方案进行评估，选择最有前景的方案继续推理；最后，当达到终止条件时，模型回溯并选择最终答案。
-
 ToT方法的优势在于其灵活性和探索能力，能够处理需要回溯和多步决策的复杂推理任务。然而，其计算复杂度较高，且需要精心设计评估机制和回溯策略，否则可能导致推理效率低下。
 
 \subsection{ReAct框架}
@@ -112,28 +89,23 @@ ReAct框架在问答、知识检索、多步骤推理等任务上表现出色，
 
 \subsection{多模态思维链}
 
-随着多模态大模型的发展，思维链推理被扩展到视觉-语言场景。多模态思维链（Visual Chain-of-Thought, VCoT）方法旨在通过在视觉理解和文本生成之间建立推理链，提升模型在多模态推理任务上的性能。
+随着多模态大模型的发展，思维链(Chain-of-Thought，CoT)推理被扩展到视觉-语言场景。多模态思维链(Visual Chain-of-Thought，VCoT)方法旨在通过在视觉理解和文本生成之间建立推理链，提升模型在多模态推理任务上的性能。
 
-VCoT方法的核心思想是在回答视觉问题时，先生成对图像内容的逐步分析和推理，然后基于这些中间步骤生成最终答案。这种分层推理方式使模型能够更好地理解复杂的视觉场景，处理需要多步推理的视觉问答任务。
+多模态思维链(Visual Chain-of-Thought，VCoT)方法的核心思想是在回答视觉问题时，先生成对图像内容的逐步分析和推理，然后基于这些中间步骤生成最终答案。这种分层推理方式使模型能够更好地理解复杂的视觉场景，处理需要多步推理的视觉问答任务。
 
 多模态CoT面临的独特挑战包括：如何设计有效的视觉推理步骤、如何在视觉特征和文本推理之间建立关联、如何处理图像中的模糊性和歧义等。研究表明，精心设计的多模态CoT方法能够显著提升模型在视觉推理、图像描述、场景理解等任务上的性能\supercite{DBLP:conf/aaai/ChenZSHSGG24}。
 
-\subsection{安全思维链的演进}
+\subsection{思维链在大模型安全领域的应用}
 
-安全思维链（Safety Chain-of-Thought, Safety CoT）是CoT推理在安全领域的应用，旨在通过显式的安全推理过程提升模型的安全识别和防御能力。早期的安全方法主要依赖于简单的分类模型，而Safety CoT引入了推理层，使模型能够分析问题的安全性质和潜在风险。
+安全思维链(Safety Chain-of-Thought，Safety CoT)是思维链(Chain-of-Thought，CoT)推理在安全领域的应用，旨在通过显式的安全推理过程提升模型的安全识别和防御能力。早期的安全方法主要依赖于简单的分类模型，而安全思维链(Safety Chain-of-Thought，Safety CoT)引入了推理层，使模型能够分析问题的安全性质和潜在风险。
 
 GuardReasoner-VL等人提出的安全推理机制训练模型在输出安全判断前先生成详细的安全推理过程，包括识别潜在风险、分析攻击意图、评估危害程度等。这种推理增强的方法显著提升了模型对复杂攻击的识别能力\supercite{DBLP:journals/corr/abs-2505-18531}。
 
-Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早期方法主要基于"问题-拒答"对进行训练，导致模型缺乏对安全本质的理解。现代Safety CoT方法通过引入安全推理链，使模型能够解释为何某个请求是不安全的，从而提升安全判断的准确性和可解释性。
+Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早期方法主要基于“问题-拒答”对进行训练，导致模型缺乏对安全本质的理解。现代Safety CoT方法通过引入安全推理链，使模型能够解释为何某个请求是不安全的，从而提升安全判断的准确性和可解释性。
 
 安全思维链的应用不仅限于攻击识别，还包括安全策略的动态调整、多模态安全推理、对抗性攻击的防御等。随着安全威胁的不断演化，Safety CoT方法将继续在模型安全领域发挥重要作用。
 
-\subsection{本节小结}
-
-本节系统介绍了大模型思维链的发展历程。从基础的CoT推理到自洽性方法，再到思维树和ReAct框架，推理能力不断提升。多模态CoT将推理扩展到视觉-语言领域，而安全CoT则在安全领域展现了重要价值。这些方法共同推动了复杂推理任务的发展，为模型的应用提供了更强大的能力基础。
-
-
-\section{通用大模型面临的核心风险}
+\section{通用大模型面临的安全风险}
 
 近年来，\ac{LLM}的飞速发展显著提升了自然语言处理的基准，并进一步催生了视觉语言模型\ac{VLM}的多模态理解能力\supercite{wang-adashield-eccv-2024, DBLP:journals/corr/abs-2505-24208}。然而，随着模型参数量和应用场景的扩张，其潜藏的安全风险也愈发凸显\supercite{DBLP:conf/cvpr/WangGL025}。
 
@@ -196,9 +168,9 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 
 \subsection{构建适配器与轻量化安全模块}
 
-该类方法在冻结主干参数的前提下，通过参数高效微调（PEFT）注入安全知识，降低训练成本并减少灾难性遗忘。
+该类方法在冻结主干参数的前提下，通过参数高效微调(Parameter-Efficient Fine-Tuning，PEFT)注入安全知识，降低训练成本并减少灾难性遗忘。
 
-例如 Safety Fine-Tuning at (Almost) No Cost 使用 LoRA 技术进行安全微调\supercite{DBLP:conf/icml/ZongBYYH24}。但后续研究指出，仅文本层面微调难以抵御视觉越狱攻击。
+例如 Safety Fine-Tuning at (Almost) No Cost 使用 LoRA(Low-Rank Adaptation)技术进行安全微调\supercite{DBLP:conf/icml/ZongBYYH24}。但后续研究指出，仅文本层面微调难以抵御视觉越狱攻击。
 
 因此，研究开始聚焦视觉-语言对齐层。例如 SafeVLM 在视觉编码器后引入“安全投影仪（Safety Projector）”和安全 Token，用于拦截视觉风险特征。VLMGuard-R1 提出多模态提示重写器，通过后视分析与多模态因果分析将潜在风险查询转化为安全指令\supercite{DBLP:conf/cvpr/ZhangCZGZFYJQ0Z25, DBLP:journals/corr/abs-2508-18649}。
 
@@ -227,19 +199,19 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 \section{检索增强生成发展}
 \subsection{检索增强生成基本原理}
 
-检索增强生成（Retrieval-Augmented Generation, RAG）是一种结合信息检索和生成式模型的技术，旨在解决大语言模型的知识时效性限制和幻觉问题\supercite{DBLP:conf/nips/LewisPPPKGKLYR020}。RAG的基本思想是在生成回答之前，先从外部知识库中检索相关文档，然后将检索到的文档作为上下文提供给生成模型，从而提升回答的准确性和可靠性。
+检索增强生成(Retrieval-Augmented Generation，RAG)是一种结合信息检索和生成式模型的技术，旨在解决大语言模型的知识时效性限制和幻觉问题\supercite{DBLP:conf/nips/LewisPPPKGKLYR020}。检索增强生成(Retrieval-Augmented Generation，RAG)的基本思想是在生成回答之前，先从外部知识库中检索相关文档，然后将检索到的文档作为上下文提供给生成模型，从而提升回答的准确性和可靠性。
 
-形式化地，给定查询$q$和外部知识库$\mathcal{D}=\{d_1, d_2, \ldots, d_N\}$，RAG过程可以表示为：
+形式化地，给定查询$q$和外部知识库$D=\{d_1, d_2, \ldots, d_N\}$，RAG过程可以表示为：
 \begin{equation}
-\mathcal{D}_{\text{top-k}} = \text{Retrieve}(q, \mathcal{D}, k)
+D_k = \mathrm{Retrieve}(q, D, k)
 \end{equation}
-其中$\text{Retrieve}(q, \mathcal{D}, k)$表示从知识库中检索出与查询$q$最相关的前$k$个文档$\mathcal{D}_{\text{top-k}}=\{d_{i_1}, d_{i_2}, \ldots, d_{i_k}\}$。
+其中$\mathrm{Retrieve}(q, D, k)$表示从知识库中检索出与查询$q$最相关的前$k$个文档$D_k=\{d_{i_1}, d_{i_2}, \ldots, d_{i_k}\}$。
 
 基于检索到的文档，生成器产生最终回答$a$：
 \begin{equation}
-a = \text{Generate}(q, \mathcal{D}_{\text{top-k}}) = \underset{a}{\arg\max} \, P(a \mid q, \mathcal{D}_{\text{top-k}})
+a = \mathrm{Generate}(q, D_k) = \arg\max_a P(a \mid q, D_k)
 \end{equation}
-其中$P(a \mid q, \mathcal{D}_{\text{top-k}})$表示在给定查询和检索文档的条件下生成回答$a$的概率。
+其中$P(a \mid q, D_k)$表示在给定查询和检索文档的条件下生成回答$a$的概率。
 
 RAG方法通常包含三个主要组件：检索器（Retriever）、生成器（Generator）和重排序器（Reranker）。检索器负责从海量文档中找到与查询相关的候选文档，生成器基于检索到的文档生成回答，重排序器对检索结果进行精细化排序以提升相关性。
 
@@ -251,27 +223,27 @@ RAG方法通常包含三个主要组件：检索器（Retriever）、生成器�
 
 BM25是一种经典的信息检索算法，其相关性评分函数定义为：
 \begin{equation}
-\text{BM25}(q, d) = \sum_{i=1}^{|q|} \text{IDF}(q_i) \cdot \frac{f(q_i, d) \cdot (k_1 + 1)}{f(q_i, d) + k_1 \cdot (1 - b + b \cdot \frac{|d|}{\text{avgdl}})}
+\mathrm{BM25}(q, d) = \sum_{i=1}^{|q|} \mathrm{IDF}(q_i) \cdot \frac{f(q_i, d) \cdot (k_1 + 1)}{f(q_i, d) + k_1 \cdot (1 - b + b \cdot \frac{|d|}{\mathrm{avgdl}})}
 \end{equation}
-其中$q_i$表示查询$q$中的第$i$个词，$f(q_i, d)$表示词$q_i$在文档$d$中的频率，$|d|$表示文档$d$的长度，$\text{avgdl}$表示文档库中文档的平均长度，$k_1$和$b$是可调参数。
+其中$q_i$表示查询$q$中的第$i$个词，$f(q_i, d)$表示词$q_i$在文档$d$中的频率，$|d|$表示文档$d$的长度，$\mathrm{avgdl}$表示文档库中文档的平均长度，$k_1$和$b$是可调参数。
 
 逆文档频率（IDF）的计算公式为：
 \begin{equation}
-\text{IDF}(q_i) = \log\frac{N - n(q_i) + 0.5}{n(q_i) + 0.5}
+\mathrm{IDF}(q_i) = \log\frac{N - n(q_i) + 0.5}{n(q_i) + 0.5}
 \end{equation}
 其中$N$是文档总数，$n(q_i)$是包含词$q_i$的文档数量。
 
-随着深度学习的发展，基于稠密向量的检索方法成为主流。DPR（Dense Passage Retrieval）使用双编码器架构，将查询和文档映射到同一向量空间，通过计算向量相似度进行检索\supercite{DBLP:conf/emnlp/KarpukhinOMLWEC20}。
+随着深度学习的发展，基于稠密向量的检索方法成为主流。Dense Passage Retrieval(DPR)使用双编码器架构，将查询和文档映射到同一向量空间，通过计算向量相似度进行检索\supercite{DBLP:conf/emnlp/KarpukhinOMLWEC20}。
 
 在稠密检索中，查询$q$和文档$d$的相似度通过它们的向量表示计算：
 \begin{equation}
-\text{sim}(q, d) = \frac{\mathbf{v}_q \cdot \mathbf{v}_d}{\|\mathbf{v}_q\| \cdot \|\mathbf{v}_d\|}
+\mathrm{sim}(q, d) = \frac{v_q \cdot v_d}{\|v_q\| \cdot \|v_d\|}
 \end{equation}
-其中$\mathbf{v}_q = E_q(q)$和$\mathbf{v}_d = E_d(d)$分别是查询编码器$E_q$和文档编码器$E_d$的输出向量。
+其中$v_q = E_q(q)$和$v_d = E_d(d)$分别是查询编码器$E_q$和文档编码器$E_d$的输出向量。
 
 检索过程可以表示为：
 \begin{equation}
-\mathcal{D}_{\text{top-k}} = \underset{d' \in \mathcal{D}}{\text{topk}} \, \text{sim}(q, d')
+D_k = \mathrm{topk}_{d' \in D} \, \mathrm{sim}(q, d')
 \end{equation}
 
 这种方法能够更好地捕捉语义相似性，显著提升检索质量。
@@ -333,7 +305,3 @@ BM25是一种经典的信息检索算法，其相关性评分函数定义为：
     \item \textbf{可信检索源} —— 限制检索到经过验证的可信来源
     \item \textbf{安全重排序} —— 在重排序阶段考虑安全因素，降低风险内容的排名
 \end{itemize}
-
-\subsection{本节小结}
-
-本节系统介绍了检索增强生成的发展历程。从基本的RAG框架到检索方法的技术演进，再到多模态RAG和智能体中的应用，RAG技术不断发展壮大。检索增强生成通过引入外部知识，有效解决了大模型的知识时效性和幻觉问题，为提升模型的实用性和可靠性提供了重要技术支撑。同时，RAG系统的安全性也成为一个重要的研究方向，需要在提升检索质量的同时确保系统的安全性和可靠性。
