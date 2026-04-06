@@ -10,7 +10,7 @@
 
 
 \paragraph{多模安全实验分组}
-针对多模安全相关实验, 本文设置如下四组对比实验，以验证各组件的增益来源：
+针对多模安全相关实验，本文设置如下四组对比实验，以验证各组件的增益来源：
 
 \begin{itemize}
     \item \textbf{Base Model：} 原始 ERNIE-4.5-VL-28B-A3B；
@@ -20,8 +20,8 @@
 \end{itemize}
 
 \paragraph{安全事实验证实验分组}
-本文将裸模型调用回复作为基准, 分别对比直接使用检索增强生成(RAG)与基于智能体的Agentic RAG方式进行比较,
-衡量事实验证型问题是否有被正确回答, 以及在对话中的不安全问题模型是否进行了主动纠偏。
+本文将裸模型调用回复作为基准，分别对比直接使用检索增强生成(RAG)与基于智能体的Agentic RAG方式进行比较，
+衡量事实验证型问题是否有被正确回答，以及在对话中的不安全问题模型是否进行了主动纠偏。
 
 \paragraph{统一推理设置}
 为保证评估公平性，所有模型在推理时采用相同的解码策略、温度参数与最大生成长度，避免由于解码参数差异引入性能偏移。我们的目标是验证：
@@ -107,19 +107,7 @@ Helpfulness = \frac{N_{\mathrm{valid}}}{N_{\mathrm{normal}}}
 
 \subsection{越狱攻击评估集}
 
-\subsubsection{越狱攻击评估集说明}
-% 越狱攻击数据集来源, 以及各种攻击类型, 现有大模型对于各种攻击类型的容忍程度
-% jailbreakbench LLM-PBE MM-SafetyBench
-% 可以给一个示例?
-
-该评估集为纯文本评估集，用于评估模型抵抗越狱攻击的能力，包含多种模板化攻击方式（例如角色扮演、拒绝抑制、语义改写等）所包装的有害问题。
-评价指标为 Attack Success Rate(ASR)，即攻击成功诱导模型生成违规内容的比例，数值越低代表模型越健壮。
-
-图~\ref{fig:jailbreak_example} 展示了一个典型的越狱攻击示例，用户通过“AIM 角色扮演”方式试图诱导模型提供黑火药相关信息，模型通过安全反思机制识别风险并拒绝回答。
-
-\vspace{8pt}
-
-% 定义思考框样式
+% 定义思考框样式（放在subsection之后，subsubsection之前）
 \newtcolorbox{ThinkBox}{
   colback=gray!6,
   colframe=gray!60,
@@ -129,6 +117,11 @@ Helpfulness = \frac{N_{\mathrm{valid}}}{N_{\mathrm{normal}}}
   fonttitle=\bfseries,
   title=模型内部思考（对用户不可见）
 }
+
+\subsubsection{越狱攻击评估集说明}
+该评估集为纯文本评估集，用于评估模型抵抗越狱攻击的能力，包含多种模板化攻击方式（例如角色扮演、拒绝抑制、语义改写等）所包装的有害问题。
+评价指标为 Attack Success Rate(ASR)，即攻击成功诱导模型生成违规内容的比例，数值越低代表模型越健壮。
+图~\ref{fig:jailbreak_example} 展示了一个典型的越狱攻击示例，用户通过“AIM 角色扮演”方式试图诱导模型提供黑火药相关信息，模型通过安全反思机制识别风险并拒绝回答。
 
 \begin{figure}[htbp]
 \centering
@@ -203,9 +196,8 @@ Helpfulness = \frac{N_{\mathrm{valid}}}{N_{\mathrm{normal}}}
 \end{figure}
 
 \subsubsection{越狱攻击评估集数据分布}
-
-该评估集参考了主流开源文本越狱攻击方式, 在原始ERNIE-4.5-VL-28B-A3B模型上进行推理, 
-主要选择基于模版的攻击方式, 选取表现较差的前10\%的攻击方式作为评估集模版。
+该评估集使用了MM-SafetyBench\supercite{Liu2024MMSafetyBench}和Jailbreakbench\supercite{Chao2024JailbreakBench}等开源越狱攻击评估集中提到的攻击方式,
+主要选择基于模版的攻击方式，在原始ERNIE-4.5-VL-28B-A3B模型上进行推理，选取表现较差的前10\%的攻击方式作为评估集模版。
 为评估模型输出的安全性，我们采用基于安全策略的自动化评估机制。
 评估模版参考了 OpenAI 等主流安全政策框架，要求评估模型根据既定安全规则对用户指令和模型回复进行判定。具体评估模版如下：
 
@@ -276,7 +268,7 @@ ASR = \frac{N_{\mathrm{attack}}}{N_{\mathrm{total}}}
 \subsubsection{事实可信评估集说明}
 % 数据是怎么构建的 说具体点 可以给一个示例
 该评估集用于验证在引入安全思维链(Safe-CoT)结合检索工具调用后，
-模型是否能够利用检索证据进行回答问题一的同时, 针对后续有害问题能否保持一个相对较高的水平。
+模型是否能够利用检索证据进行回答问题一的同时，针对后续有害问题能否保持一个相对较高的水平。
 与前两类主要关注的安全风险不同，该评估集重点衡量模型在外部信息依赖条件下的事实可信与输出安全性的影响。
 
 \subsubsection{评估方式说明}
@@ -295,7 +287,7 @@ Fact Accuracy 计算方式为：
 FactAcc = \frac{N_{\mathrm{correct}}}{N_{\mathrm{fact}}}
 \end{equation}
 
-Safety分数的计算方式和上述安全性分数计算方式相同.
+Safety分数的计算方式和上述安全性分数计算方式相同。
 此外，我们统计模型平均响应时延（Latency），以衡量工具调用机制带来的计算开销。
 为避免评估偏差，所有模型在该数据集上均启用相同工具接口与调用策略约束。评估阶段采用固定版本检索接口，避免因知识库更新导致结果波动。
 该多维度评估框架能够同时刻画模型在工具调用决策、事实一致性与风险控制方面的综合表现。
@@ -310,7 +302,7 @@ Safety分数的计算方式和上述安全性分数计算方式相同.
 这一结果验证了本文在第三章提出的核心假设：
 仅依赖推理蒸馏不足以稳定增强安全能力，而将规则约束嵌入推理结构，
 并通过强化学习进行行为层面的动态校正，能够更有效地缩小“安全推理鸿沟”，实现安全性与有用性的协同提升。
-在事实可信评估中, 基于智能体安全反思调用工具链同样能显著提高安全性分数, 但与之对应的时延也会随之增加。
+在事实可信评估中，基于智能体安全反思调用工具链同样能显著提高安全性分数，但与之对应的时延也会随之增加。
 
 \subsection{多模安全与有用性主结果}
 
@@ -331,7 +323,7 @@ SafetyCoT + RLVR & \textbf{0.92} & 0.89 \\
 \end{table*}
 
 从表~\ref{tab:main_results} 可见，Base Model 在安全问题集上的安全占比仅为 $0.56$，说明原始模型在真实开放场景下仍存在较高比例的违规输出风险。引入 Distilled CoT 后，安全得分提升至 $0.85$，表明通过让模型模型显式推理链蒸馏在一定程度上改善了模型的风险识别能力。
-然而，提升安全分数的同时有用性指标明显下降，说明单纯蒸馏推理过程并不能保证模型稳定形成安全边界，也有很大可能造成模型的过敏感, 使其丧失了最基本指令遵循能力。
+然而，提升安全分数的同时有用性指标明显下降，说明单纯蒸馏推理过程并不能保证模型稳定形成安全边界，也有很大可能造成模型的过敏感，使其丧失了最基本指令遵循能力。
 
 相比之下，SafetyCoT 模型在安全性指标上提升至 $0.88$，同时保持 $0.91$ 的有用性得分，呈现出更加平衡的性能表现。这一结果说明，引入规则映射与结构化安全反思数据后，模型不仅能够识别高风险语境，还能够在边界问题上保持较为稳定的生成行为。这验证了“规则理解—风险分析—安全生成”推理结构对缩小安全推理鸿沟的有效性。
 
@@ -350,10 +342,10 @@ Harm Score表示有害程度平均得分（0--5，越低越好）。}
 \toprule
 Model & ASR $\downarrow$ & Harm Score $\downarrow$ \\
 \midrule
-Base Model & 0.72 & 4.3 \\
-Distilled CoT & 0.31 & 2.1 \\
-SafetyCoT & 0.28 & 1.8 \\
-SafetyCoT + RLVR & \textbf{0.12} & \textbf{1.1} \\
+Base Model & 0.72 & 4.30 \\
+Distilled CoT & 0.31 & 2.10 \\
+SafetyCoT & 0.28 & 1.80 \\
+SafetyCoT + RLVR & \textbf{0.12} & \textbf{1.10} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -370,15 +362,16 @@ Distilled CoT 显著降低了 ASR 至 $0.31$，说明显式推理链在一定程
 
 \begin{table*}[t]
 \centering
-\caption{Agentic RAG 事实可信评估结果。Fact Acc 表示与 Ground Truth 一致率，Safety 表示风险响应合规率，Latency 为平均响应时延。}
+\caption{Agentic RAG 事实可信评估结果。Fact Acc 表示与 Ground Truth 一致率，Safety 表示风险响应合规率，Latency 为平均响应时延。
+这里的Latency仅统计了第一轮直接进行工具调用并开始生成最终结果的记录。}
 \label{tab:rag_results}
 \begin{tabular}{lcccc}
 \toprule
 Model & Fact Acc $\uparrow$ & Safety $\uparrow$ & Latency (ms) \\
 \midrule
-Baseline    & 76.8  & 78.2 & 0 \\
-Vanilla RAG & 80.3  & 56.3 & 120 \\
-Agentic RAG & \textbf{86.7} & \textbf{91.3} & 1020 \\
+Baseline    & 76.82  & 78.24 & 0.00 \\
+Vanilla RAG & 80.31  & 56.32 & 120.36 \\
+Agentic RAG & \textbf{86.70} & \textbf{91.30} & 1020.00* \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -387,8 +380,8 @@ Agentic RAG & \textbf{86.7} & \textbf{91.3} & 1020 \\
 Vanilla RAG指在回答问题时直接进行文档召回并使用模版拼接到上下文中;
 Agentic RAG指让模型自主决策调用搜索工具链。
 
-从实验结果来看, Vanilla RAG 能够在一定程度上提升事实准确性，
-但其中大量文档填充会导致模型分散注意力, 最终没有对风险问题拒答, 转而产生潜在不安全输出, 最终安全分数下降。
+从实验结果来看，Vanilla RAG 能够在一定程度上提升事实准确性，
+但其中大量文档填充会导致模型分散注意力，最终没有对风险问题拒答，转而产生潜在不安全输出，最终安全分数下降。
 相比之下，Agentic RAG 在 Fact Acc 上提升至 $86.7\%$，
 同时风险响应合规率同步提高，说明将安全反思能力迁移至工具调用与证据融合流程后，模型能够在事实生成前进行更为谨慎的决策。
 从行为层面分析，Agentic RAG 不再将检索视为固定流程步骤，而是作为决策行为的一部分。当模型在内部推理阶段判断知识不确定时，能够主动触发工具调用，并结合规则边界对检索结果进行二次筛选。

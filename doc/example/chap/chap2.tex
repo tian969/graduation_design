@@ -36,15 +36,15 @@ L_{\mathrm{CLM}} = -\sum_{t=1}^{T} \log P(x_t \mid x_{<t})
 指令微调是指在预训练基础上，通过监督学习训练模型遵循自然语言指令完成特定任务的方法\supercite{DBLP:conf/iclr/WeiBZGYLDDL22}。相关研究首次系统性地研究了指令微调的效果，证明了通过多任务指令微调可以显著提升模型的零样本和少样本性能。
 指令微调的核心思想是将各种NLP任务统一为指令-响应格式，使模型学习到通用的指令遵循能力。相关研究发现随着模型规模和指令数据量的增加，模型的指令遵循能力持续提升\supercite{DBLP:journals/corr/abs-2210-11416}。
 在实践层面，相关研究证明了即使使用相对较小的指令数据集，也能在预训练模型基础上获得良好的指令遵循能力\supercite{DBLP:journals/corr/abs-2305-15011}。这激发了开源社区对指令微调模型的广泛研究和应用。
-现如今指令微调已经成为面对不同领域下游任务的首选, 并在工业界得到了广泛应用。
+现如今指令微调已经成为面对不同领域下游任务的首选，并在工业界得到了广泛应用。
 % TODO: 补后果的几篇文献, 指令微调需要数学公式
-然而，指令微调仍面临挑战，指令微调的数据质量高低直接影响模型的性能，大规模进行指令微调会导致灾难性遗忘, 训练本身也极其容易出现过拟合, 欠拟合等现象, 严重影响最终模型表现。
+然而，指令微调仍面临挑战，指令微调的数据质量高低直接影响模型的性能，大规模进行指令微调会导致灾难性遗忘，训练本身也极其容易出现过拟合，欠拟合等现象，严重影响最终模型表现。
 
 \subsection{基于人类反馈的强化学习技术}
 尽管指令微调提升了模型遵循指令的能力，但模型的输出仍可能与人类价值观和期望存在偏差。人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)则通过引入人类偏好信号，使模型输出与人类价值观对齐。
 人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)通常包含三个阶段：首先使用人类标注的偏好数据训练奖励模型（Reward Model，RM），然后使用强化学习算法（如PPO(Proximal Policy Optimization)）优化策略模型，使生成的输出获得更高的奖励\supercite{DBLP:conf/nips/Ouyang0JAWMZASR22}。相关研究进一步将人类反馈强化学习(RLHF)扩展到有害性（Harmlessness）对齐，训练出既有帮助性又无害的助手\supercite{DBLP:journals/corr/abs-2204-05862}。
 Anthropic团队提出的宪法人工智能(Constitutional AI，CAI)方法探索了利用AI反馈替代部分人类反馈的可能性，通过预定义的宪法原则指导模型自我批评和修正，降低了人类反馈强化学习(RLHF)对大规模人类标注的依赖\supercite{DBLP:journals/corr/abs-2212-08073}。
-同样, 相关研究也指出RLHF面临多重挑战。一方面，训练过程复杂且不稳定，需要大量高质量的偏好数据；另一方面，强化学习优化可能导致训练不稳定和灾难性遗忘。此外，RLHF会引入“对齐税”（Alignment Tax），即对齐偏好的过程可能降低模型在通用任务上的性能。
+同样，相关研究也指出RLHF面临多重挑战。一方面，训练过程复杂且不稳定，需要大量高质量的偏好数据；另一方面，强化学习优化可能导致训练不稳定和灾难性遗忘。此外，RLHF会引入“对齐税”（Alignment Tax），即对齐偏好的过程可能降低模型在通用任务上的性能。
 
 \subsection{偏好优化与对齐方法}
 为克服人类反馈强化学习(Reinforcement Learning from Human Feedback，RLHF)的局限性，研究者提出了多种替代方案。直接偏好优化(Direct Preference Optimization，DPO)通过将奖励模型隐式地表示为策略函数的函数，避免了显式训练奖励模型和强化学习过程，显著简化了训练流程\supercite{DBLP:conf/nips/RafailovSMMEF23}。
@@ -110,7 +110,7 @@ Safety CoT的演进经历了从简单拒答到推理增强的发展过程。早�
 
 推理时控制与自反思聚焦于推理过程中的实时安全管控。核心思路是在模型预测下一词元时嵌入特定采样策略，引导模型生成安全合规内容。
 该类方法无需对主模型进行微调，仅在词元输出阶段介入调控，适配实时场景需求，并可动态识别和修正潜在风险。例如，Qwen3-Guard \supercite{DBLP:journals/corr/abs-2510-14276}的工作提出流式版本以适配实时场景；ETA 通过对句子的 Best-of-N 前缀进行推理，实现过程级安全控制\supercite{DBLP:conf/iclr/DingLZ25}。
-和上面提到的后处理方法相比, 他是在输出且尚未结束的过程中介入管控, 避免了完整输出的生成成本，相对更早地发现潜在风险并进行修正。
+和上面提到的后处理方法相比，他是在输出且尚未结束的过程中介入管控，避免了完整输出的生成成本，相对更早地发现潜在风险并进行修正。
 
 \subsection{检索增强与部署级安全}
 
@@ -240,20 +240,11 @@ D_k = \mathrm{topk}_{d' \in D} \, \mathrm{sim}(q, d')
 
 \subsection{检索增强生成的安全性考虑}
 
-虽然RAG通过引入外部知识能够减少幻觉，但也引入了新的安全挑战。检索增强生成的安全性\supercite{DBLP:journals/corr/abs-2410-14479}考虑包括：
-
-\begin{enumerate}
-    \item \textbf{检索结果质量} —— 恶意或低质量的检索内容可能被模型错误利用
-    \item \textbf{信息泄露} —— 检索过程可能访问敏感信息，需要适当的访问控制
-    \item \textbf{对抗性攻击} —— 攻击者可能通过投毒检索库来影响模型输出
-\end{enumerate}
-
-为应对这些挑战，研究者提出了多种解决方案：
-\begin{itemize}
-    \item \textbf{检索结果过滤} —— 对检索内容进行安全检查和过滤
-    \item \textbf{可信检索源} —— 限制检索到经过验证的可信来源
-    \item \textbf{安全重排序} —— 在重排序阶段考虑安全因素，降低风险内容的排名
-\end{itemize}
+虽然RAG通过引入外部知识能够减少幻觉，但也引入了新的安全挑战。
+多项研究指出\supercite{Liang2025SafeRAG, Tan2024GluePizza}, 检索增强生成会导致原生模型安全能力发生严重退化\supercite{An2025RAGSafety}, 
+并且往往会输出不安全内容, 如Bang An\supercite{An2025RAGSafety}的工作, 给出了一个核心结论:
+RAG 不会提升安全性，反而可能降低, 即使模型是安全的, 检索文档也是安全的, 仍有可能产生有害输出, 根本原因是现有文档会RAG会改变模型的安全分布（safety profile）,
+这不仅仅出现在普通LLM, RAG智能体\supercite{Yu2025SafetyDevolution}甚至会比“未对齐模型”还更不安全。
 
 \section{本章小结}
 
