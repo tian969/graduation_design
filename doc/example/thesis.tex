@@ -29,7 +29,7 @@
 \usepackage{xcolor}     % 颜色支持
 \usepackage{tcolorbox}  % 对话气泡框
 \usepackage{enumitem}   % 列表样式
-
+\usepackage{pdfpages}
 % --- 对话气泡样式 ---
 \newtcolorbox{UserBox}{
   colback=blue!3,
@@ -146,7 +146,7 @@
 	% 如果同时要使参考文献列表参与章节编号，可将“bibintoc”改为“bibnumbered”。
 	\printbibliography[heading = bibintoc, title = {参考文献}]
 	% 各附录。
-	\include{chap/encl1}
+	% \include{chap/encl1}
 
 	% 以下为正文之后的部分，默认不进行章节编号。
 	\backmatter

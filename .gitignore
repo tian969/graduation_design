@@ -16,7 +16,7 @@
 *.snm
 *.vrb
 *.xdv
-
+!thesis.pdf
 # ===== PDF 输出（一般不提交）=====
 *.pdf
 
