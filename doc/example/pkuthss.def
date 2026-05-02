@@ -1,0 +1,3 @@
+\ProvidesFile{pkuthss.def}[Local wrapper to project template]
+\input{../../tex/pkuthss.def}
+\endinput

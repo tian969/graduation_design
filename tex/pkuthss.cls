@@ -251,6 +251,7 @@
 \thss@int@infoitema{emajor}
 \thss@int@infoitema{direction}
 \thss@int@infoitema{cmentor}
+\thss@int@infoitema{cassistantmentor}
 \thss@int@infoitema{ementor}
 \thss@int@infoitema{ckeywords}
 \thss@int@infoitema{ekeywords}
@@ -265,6 +266,7 @@
 \thss@int@infoitemb{mentorlines}
 \thss@int@infoitemb{cabstractname}
 \thss@int@infoitemb{eabstractname}
+\def\@cassistantmentor{}
 % Set up document information using the `key = value' grammar.
 \newcommand*{\pkuthssinfo}[1]{\setkeys{thss@info}{#1}}
 % Becomes \newline in the \makeblind scope.
@@ -409,8 +411,11 @@
 				{\bfseries\label@direction}	&
 				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@direction}	\\
 				{\bfseries\label@cmentor}		&
-				\thss@int@fillinblank{\mentorlines}%
-					{\thss@tmp@len}{\fangsong\@cmentor}	\\
+				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cmentor}	\\
+				\ifx\@cassistantmentor\empty\else
+				{\bfseries\label@cassistantmentor}	&
+				\thss@int@fillinblank{1}{\thss@tmp@len}{\fangsong\@cassistantmentor}	\\
+				\fi
 			\end{tabular}%
 		}
 		\vfill
