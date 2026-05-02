@@ -17,6 +17,7 @@
 *.vrb
 *.xdv
 !thesis.pdf
+!origin.pdf
 # ===== PDF 输出（一般不提交）=====
 *.pdf
 
