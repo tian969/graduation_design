@@ -1,0 +1,49 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36" version="29.6.1">
+  <diagram id="data-synthesis-flow" name="data_synthesis_flow">
+    <mxGraphModel dx="1018" dy="566" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="data" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="真实多模态样本&#xa;文本问题+图像" vertex="1">
+          <mxGeometry height="60" width="170" x="80" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="annot" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="人工复核与&#xa;类别标注" vertex="1">
+          <mxGeometry height="60" width="170" x="300" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="principle" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="类别映射为&#xa;安全原则" vertex="1">
+          <mxGeometry height="60" width="170" x="520" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="rule" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="结合具体问题&#xa;生成实例规则" vertex="1">
+          <mxGeometry height="60" width="170" x="740" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cot" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#dae8fc;" value="阶段1：生成安全&#xa;推理过程" vertex="1">
+          <mxGeometry height="60" width="170" x="520" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="answer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#d5e8d4;" value="阶段2：生成&#xa;最终回复" vertex="1">
+          <mxGeometry height="60" width="170" x="740" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="output" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#fff2cc;" value="结构化训练样本&#xa;规则+推理+回复" vertex="1">
+          <mxGeometry height="60" width="170" x="740" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="data" style="endArrow=block;endFill=1;html=1;rounded=0;" target="annot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="annot" style="endArrow=block;endFill=1;html=1;rounded=0;" target="principle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="principle" style="endArrow=block;endFill=1;html=1;rounded=0;" target="rule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="rule" style="endArrow=block;endFill=1;html=1;rounded=0;" target="cot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="cot" style="endArrow=block;endFill=1;html=1;rounded=0;" target="answer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="answer" style="endArrow=block;endFill=1;html=1;rounded=0;" target="output">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

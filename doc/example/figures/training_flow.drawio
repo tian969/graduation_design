@@ -1,0 +1,148 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36" version="29.6.1">
+  <diagram id="training-flow" name="training_flow">
+    <mxGraphModel dx="1131" dy="629" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="1" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="W54jmgnAoPwlaNFeA6s5-3" parent="1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=20;indent=5;dashed=1;labelBackgroundColor=default;textOpacity=0;" value="" vertex="1">
+          <mxGeometry height="655" width="589" x="638" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="W54jmgnAoPwlaNFeA6s5-2" parent="1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=20;indent=5;dashed=1;labelBackgroundColor=default;textOpacity=0;" value="" vertex="1">
+          <mxGeometry height="444" width="572" x="39" y="293" as="geometry" />
+        </mxCell>
+        <mxCell id="W54jmgnAoPwlaNFeA6s5-1" parent="1" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.rect;fillColor2=none;strokeWidth=1;size=20;indent=5;dashed=1;labelBackgroundColor=default;textOpacity=0;" value="" vertex="1">
+          <mxGeometry height="235" width="494" x="36" y="33" as="geometry" />
+        </mxCell>
+        <mxCell id="input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="多模态输入&lt;br&gt;$$(x_q, x_i)$$" vertex="1">
+          <mxGeometry height="64" width="180" x="80" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="label" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="类别标注&lt;br&gt;$$x_c$$" vertex="1">
+          <mxGeometry height="64" width="180" x="80" y="178" as="geometry" />
+        </mxCell>
+        <mxCell id="principle" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="安全原则映射&lt;br&gt;$$p = P(x_c)$$" vertex="1">
+          <mxGeometry height="64" width="180" x="296" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="rule" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;" value="实例规则生成&lt;br&gt;$$r^{rule} = R(p, x_q)$$" vertex="1">
+          <mxGeometry height="64" width="200" x="286" y="182" as="geometry" />
+        </mxCell>
+        <mxCell id="sft_title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#dae8fc;" value="阶段1：监督微调&#xa;Reasoning-Aware SFT" vertex="1">
+          <mxGeometry height="72" width="220" x="279.09" y="307" as="geometry" />
+        </mxCell>
+        <mxCell id="cot" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#dae8fc;" value="安全思维链推理训练数据&lt;br&gt;$$L_{cot}$$" vertex="1">
+          <mxGeometry height="64" width="180" x="59" y="411" as="geometry" />
+        </mxCell>
+        <mxCell id="answer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#dae8fc;" value="安全回复训练数据&lt;br&gt;$$L_answer$$" vertex="1">
+          <mxGeometry height="64" width="180" x="375.09000000000003" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="sft_data" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#f5f5f5;" value="训练样本&lt;br&gt;$$(x, r^rule, z*, y*)$$" vertex="1">
+          <mxGeometry height="64" width="200" x="59" y="521" as="geometry" />
+        </mxCell>
+        <mxCell id="sft_loss" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#f5f5f5;" value="总损失&lt;br&gt;$$L_{SFT} = L_{cot} + L_{answer}$$" vertex="1">
+          <mxGeometry height="64" width="220" x="355.09000000000003" y="522" as="geometry" />
+        </mxCell>
+        <mxCell id="theta1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#f5f5f5;" value="初始化参数&lt;br&gt;$$θ1$$" vertex="1">
+          <mxGeometry height="64" width="160" x="235.08999999999997" y="632" as="geometry" />
+        </mxCell>
+        <mxCell id="rl_title" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#d5e8d4;" value="阶段2：在线强化学习&#xa;Rule-Based RL" vertex="1">
+          <mxGeometry height="72" width="220" x="814" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="policy" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#d5e8d4;" value="策略模型&lt;br&gt;$$π_θ(y|x)$$" vertex="1">
+          <mxGeometry height="64" width="180" x="674" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="generate" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#d5e8d4;" value="生成回复&lt;br&gt;$$y ~ π_θ$$" vertex="1">
+          <mxGeometry height="64" width="180" x="994" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="reward" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#f5f5f5;" value="规则验证&lt;br&gt;$$r(x,y)=r_{safe}×r_{help}$$" vertex="1">
+          <mxGeometry height="64" width="220" x="974" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="grad" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#f5f5f5;" value="策略梯度更新&lt;br&gt;$$∇_θ J(θ)$$" vertex="1">
+          <mxGeometry height="64" width="180" x="994" y="393" as="geometry" />
+        </mxCell>
+        <mxCell id="theta2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;strokeWidth=1;fillColor=#f5f5f5;" value="最终参数&lt;br&gt;$$θ2$$" vertex="1">
+          <mxGeometry height="64" width="160" x="1004" y="489" as="geometry" />
+        </mxCell>
+        <mxCell id="tag1" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontColor=#2F5597;" value="(1)" vertex="1">
+          <mxGeometry height="30" width="50" x="432.00000000000006" y="334" as="geometry" />
+        </mxCell>
+        <mxCell id="tag2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontColor=#38761D;" value="(2)" vertex="1">
+          <mxGeometry height="30" width="50" x="1054" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="input" style="endArrow=block;endFill=1;html=1;" target="label">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="label" style="endArrow=block;endFill=1;html=1;" target="principle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="principle" style="endArrow=block;endFill=1;html=1;" target="rule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="rule" style="endArrow=block;endFill=1;html=1;" target="sft_title">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="sft_title" style="endArrow=block;endFill=1;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="222.39693069306924" y="412" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="sft_title" style="endArrow=block;endFill=1;html=1;" target="answer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" style="endArrow=block;endFill=1;html=1;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="147.99909090909097" y="476" as="sourcePoint" />
+            <mxPoint x="152.18090909090898" y="522" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="answer" style="endArrow=block;endFill=1;html=1;" target="sft_loss">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" style="endArrow=block;endFill=1;html=1;" target="theta1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="201.63545454545448" y="586" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="sft_loss" style="endArrow=block;endFill=1;html=1;" target="theta1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" style="dashed=1;endArrow=block;endFill=1;html=1;" target="answer">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="235.08999999999997" y="444" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="theta1" style="endArrow=block;endFill=1;html=1;" target="rl_title">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="924" y="664" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="rl_title" style="endArrow=block;endFill=1;html=1;" target="policy">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="rl_title" style="endArrow=block;endFill=1;html=1;" target="generate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="policy" style="endArrow=block;endFill=1;html=1;" target="generate">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="generate" style="endArrow=block;endFill=1;html=1;" target="reward">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="reward" style="endArrow=block;endFill=1;html=1;" target="grad">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="grad" style="endArrow=block;endFill=1;html=1;" target="theta2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="grad" style="dashed=1;endArrow=block;endFill=1;html=1;curved=1;" target="policy">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="846" y="399" />
+              <mxPoint x="854" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
